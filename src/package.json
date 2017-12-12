@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "dependencies": {
+    "@types/webpack-env": "1.13.0",
     "reflect-metadata": "^0.1.10",
     "class-transformer": "0.1.8",
     "typescript": "^2.6.2",

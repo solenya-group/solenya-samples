@@ -5,6 +5,7 @@ import { Counter } from './counter'
 import { BMI } from './bmi'
 import { GitSearch } from './gitSearch'
 import { Composition } from './composition'
+import { Todos } from './todos'
 
 const history = createHistory()
 
@@ -14,6 +15,7 @@ export class Samples extends Component
     @Type (() => BMI) bmi = new BMI (this)
     @Type (() => Composition) composition = new Composition (this)
     @Type (() => GitSearch) gitSearch = new GitSearch (this)
+    @Type (() => Todos) todos = new Todos (this)
 
     activeAppName: string
 
@@ -27,8 +29,7 @@ export class Samples extends Component
     changePage (name: string)
     {
         this.update(() => {
-            if (this.activeAppName != name)
-                this.activeAppName = name
+            this.activeAppName = name
             if (history.location.pathname != "/" + name)                
                 history.push (name)            
         })
@@ -41,7 +42,8 @@ export class Samples extends Component
                     div ("To time travel, in the console:"),
                     div ("var t = window.app.time"),
                     div ("t.start()"),
-                    div ("t.next()")
+                    div ("t.next()"),
+                    div ("t.seek (state => state.counter.count == 0)")
                 ),
                 ul (
                     this.childrenKeys().map (key =>
