@@ -11,8 +11,16 @@ export class BMI extends Component
 
     view () {       
         return div (             
-            div ("height", slider (() => this.height, 100, 250, 1, e => this.updateProperty (e)), this.height),
-            div ("weight", slider (() => this.weight, 30, 150, 1, e => this.updateProperty (e)), this.weight),
+            div (
+                "height",
+                slider (() => this.height, 100, 250, 1, e => this.updateProperty (e)), 
+                this.height
+            ),
+            div (
+                "weight",
+                slider (() => this.weight, 30, 150, 1, e => this.updateProperty (e)),
+                this.weight
+            ),
             div ("bmi: " + this.calc())
         )
     }

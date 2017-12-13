@@ -23,8 +23,7 @@
     "url-loader": "0.5.9",
     "webpack": "^3.9.1",
     "webpack-hot-middleware": "2.18.2",
-    "lodash.debounce": "^4.0.8",
-    "@types/lodash.debounce": "^4.0.3",
-    "pickle-ts": "^0.0.5"
+    "pickle-ts": "0.0.6",
+    "lodash-decorators": "^4.5.0"
   }
 }

@@ -1,9 +1,10 @@
 import { Component, slider, div, ul, li, a, key, inputer, KeyValue, isNullOrEmpty } from 'pickle-ts'
-import { debounce } from 'lodash'
+import { debounce } from 'lodash-decorators'
+import { Exclude } from 'class-transformer'
 
 export class GitSearch extends Component
 {
-    searchText?: string = ""
+    searchText?: string = undefined
     results: any[] = []
 
     view () {       
@@ -22,10 +23,12 @@ export class GitSearch extends Component
     searchTextChange (payload: KeyValue) {
         this.updateProperty (payload)
         if (! isNullOrEmpty (payload.value))
-            debounce(() => this.search (payload.value), 500)()
-    }
+            this.search (payload.value!)
+    }   
 
-    async search(search: string) {
+    @Exclude()
+    @debounce (500)    
+    async search (search: string) {
         var result = await fetch ("https://api.github.com/search/repositories?q=" + encodeURI (search))
         if (result.ok) {
             var body = await result.json()

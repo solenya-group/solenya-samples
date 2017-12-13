@@ -2,13 +2,13 @@
 
 export class Todos extends Component
 {    
-    title: string = ""
+    title?: string
     list: string[] = []
 
     add () {
         this.update(() => {            
-            this.list = this.list.concat (this.title)
-            this.title = ""
+            this.list = this.list.concat (this.title!)
+            this.title = undefined
         })
     }
 
@@ -21,7 +21,7 @@ export class Todos extends Component
     view () {
         return div (
             inputer (() => this.title, e => this.updateProperty (e)),
-            commandButton (() => this.add(), 'Add'),
+            ! this.title ? undefined : commandButton (() => this.add(), 'Add'),
             ul (
                 this.list.map (task =>
                     li (

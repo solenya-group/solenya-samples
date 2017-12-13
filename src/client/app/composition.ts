@@ -11,6 +11,6 @@ export class Composition extends Component
         return div (   
             this.counter1.view (),
             this.counter2.view ()
-        );
+        )
     }
 }
