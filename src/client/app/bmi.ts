@@ -9,7 +9,7 @@ export class BMI extends Component
         return this.weight / (this.height * this.height / 10000)
     }
 
-    view () {       
+    view () {           
         return div (             
             div (
                 "height",

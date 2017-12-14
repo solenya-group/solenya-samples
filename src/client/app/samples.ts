@@ -11,17 +11,17 @@ const history = createHistory()
 
 export class Samples extends Component
 {
-    @Type (() => Counter) counter = new Counter (this)
-    @Type (() => BMI) bmi = new BMI (this)
-    @Type (() => Composition) composition = new Composition (this)
-    @Type (() => GitSearch) gitSearch = new GitSearch (this)
-    @Type (() => Todos) todos = new Todos (this)
+    @Type (() => Counter) counter = new Counter ()
+    @Type (() => BMI) bmi = new BMI ()
+    @Type (() => Composition) composition = new Composition ()
+    @Type (() => GitSearch) gitSearch = new GitSearch ()
+    @Type (() => Todos) todos = new Todos ()
 
     activeAppName: string
 
-    constructor(parent?: Component)
+    constructor()
     {
-        super (parent)   
+        super ()   
         const path = location.pathname.substring(1)
         this.changePage (path != "" ? path : "counter" )
     }

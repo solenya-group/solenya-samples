@@ -1,4 +1,4 @@
-import 'reflect-metadata'
+import './polyfills'
 import { App } from 'pickle-ts'
 import { Samples } from '../app/samples'
 

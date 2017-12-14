@@ -23,7 +23,9 @@
     "url-loader": "0.5.9",
     "webpack": "^3.9.1",
     "webpack-hot-middleware": "2.18.2",
-    "pickle-ts": "0.0.6",
-    "lodash-decorators": "^4.5.0"
+    "pickle-ts": "0.0.7",
+    "lodash-decorators": "^4.5.0",
+    "whatwg-fetch": "^2.0.3",    
+    "promise-polyfill": "^6.1.0"
   }
 }

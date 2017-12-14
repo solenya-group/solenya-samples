@@ -4,8 +4,8 @@ import { Type } from 'class-transformer'
 
 export class Composition extends Component
 {    
-    @Type (() => Counter) counter1: Counter = new Counter (this)
-    @Type (() => Counter) counter2: Counter = new Counter (this)
+    @Type (() => Counter) counter1 = new Counter ()
+    @Type (() => Counter) counter2 = new Counter ()
 
     view () {
         return div (   
