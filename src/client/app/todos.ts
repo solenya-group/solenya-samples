@@ -1,4 +1,5 @@
-﻿import { Component, div, ul, li, inputer, commandButton } from 'pickle-ts'
+﻿import { Component, div, ul, li, inputer, commandButton, css, p } from 'pickle-ts'
+import { icon, commandLink } from '../util/util'
 
 export class Todos extends Component
 {    
@@ -11,7 +12,7 @@ export class Todos extends Component
             this.title = undefined
         })
     }
-
+    
     delete (task: string) {
         this.update (() =>
             this.list = this.list.filter (t => t != task)
@@ -21,12 +22,12 @@ export class Todos extends Component
     view () {
         return div (
             inputer (() => this.title, e => this.updateProperty (e)),
-            ! this.title ? undefined : commandButton (() => this.add(), 'Add'),
+            p (! this.title ? undefined : commandButton (() => this.add(), 'Add')),
             ul (
                 this.list.map (task =>
-                    li (
+                    li (                                                
                         task,
-                        commandButton (() => this.delete (task), "delete")
+                        commandLink (() => this.delete (task), icon("delete"))
                     )
                 )
             )

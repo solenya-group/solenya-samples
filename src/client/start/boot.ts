@@ -1,4 +1,6 @@
+import '../css/site.scss'
 import './polyfills'
+import 'bootstrap'
 import { App } from 'pickle-ts'
 import { Samples } from '../app/samples'
 

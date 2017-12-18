@@ -1,11 +1,14 @@
-﻿import { Component, div, button, ul, li, a, css, h2 } from 'pickle-ts'
+﻿import { Component, css, div, ul, li, a, main, h1 } from 'pickle-ts'
 import { Type } from 'class-transformer'
-import createHistory from 'history/createBrowserHistory'
 import { Counter } from './counter'
 import { BMI } from './bmi'
 import { GitSearch } from './gitSearch'
 import { Composition } from './composition'
 import { Todos } from './todos'
+import { TableSample } from './tableSample'
+import { TimeTravel } from './timeTravel'
+import { commandLink } from '../util/util'
+import createHistory from 'history/createBrowserHistory'
 
 const history = createHistory()
 
@@ -16,6 +19,8 @@ export class Samples extends Component
     @Type (() => Composition) composition = new Composition ()
     @Type (() => GitSearch) gitSearch = new GitSearch ()
     @Type (() => Todos) todos = new Todos ()
+    @Type (() => TableSample) tableSample = new TableSample ()
+    @Type (() => TimeTravel) timeTravel = new TimeTravel ()
 
     activeAppName: string
 
@@ -38,23 +43,24 @@ export class Samples extends Component
     view () {
         return (
             div (
-                div (
-                    div ("To time travel, in the console:"),
-                    div ("var t = window.app.time"),
-                    div ("t.start()"),
-                    div ("t.next()"),
-                    div ("t.seek (state => state.counter.count == 0)")
-                ),
-                ul (
-                    this.childrenKeys().map (key =>
-                        li (
-                            a({onclick: () => this.changePage (key)}, key)
+                div(css ("navbar", "navbar-expand-md", "navbar-dark", "bg-light"),
+                    div (css ("container"),
+                        ul(css ("nav"),
+                            this.childrenKeys().map (key =>
+                                li({class:"nav-item"},
+                                    commandLink  (() => this.changePage (key), css("nav-link"),
+                                        decamel (key)
+                                    )
+                                )
+                            ),            
                         )
-                    ),            
+                    ),
                 ),
-                div (
-                    h2 (this.activeAppName),
-                    this[this.activeAppName].view()
+                main (
+                    div (css ("container"),                        
+                        h1 (css("py-3"), decamel (this.activeAppName)),
+                        this[this.activeAppName].view()
+                    )
                 )
             )
         )
@@ -63,4 +69,10 @@ export class Samples extends Component
     childrenKeys() {
         return Object.keys (this).filter (k => this[k] instanceof Component)
     }
+}
+
+function decamel (str: string) {
+    return str
+        .replace(/([A-Z])/g, ' $1')
+        .replace(/^./, str => str.toUpperCase() )
 }

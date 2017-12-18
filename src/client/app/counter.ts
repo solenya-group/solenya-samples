@@ -1,4 +1,4 @@
-import { Component, div, button } from 'pickle-ts'
+import { Component, div, commandButton, css } from 'pickle-ts'
 
 export class Counter extends Component
 {
@@ -6,13 +6,17 @@ export class Counter extends Component
 
     view () {
         return div (
-            button ({ onclick : () => this.add(+1)}, "+"),
+            myButton (() => this.add(-1), "-"),
             this.count,
-            button ({ onclick : () => this.add(-1)}, "-")     
+            myButton (() => this.add(+1), "+") 
         )
     }
     
     add (x: number) {
         return this.update (() => this.count += x)
     } 
+}
+
+function myButton (onclick: () => void, content: any) {
+    return commandButton (onclick, content, css("m-2", "btn", "btn-outline-primary"))
 }
