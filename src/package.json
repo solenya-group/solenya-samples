@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "dependencies": {
+    "pickle-ts": "0.0.8",
     "typescript": "^2.6.2",
     "@types/webpack-env": "1.13.0",
     "reflect-metadata": "0.1.10",
@@ -25,7 +26,6 @@
     "url-loader": "0.6.2",
     "webpack": "3.10.0",
     "webpack-hot-middleware": "2.21.0",
-    "pickle-ts": "0.0.7",
     "lodash-decorators": "4.5.0",
     "whatwg-fetch": "2.0.3",
     "promise-polyfill": "6.1.0",

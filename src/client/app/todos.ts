@@ -1,5 +1,5 @@
-﻿import { Component, div, ul, li, inputer, commandButton, css, p } from 'pickle-ts'
-import { icon, commandLink } from '../util/util'
+﻿import { Component, div, ul, li, inputer, commandButton, commandLink, css } from 'pickle-ts'
+import { icon, myButton, myInput } from '../util/util'
 
 export class Todos extends Component
 {    
@@ -21,8 +21,10 @@ export class Todos extends Component
 
     view () {
         return div (
-            inputer (() => this.title, e => this.updateProperty (e)),
-            p (! this.title ? undefined : commandButton (() => this.add(), 'Add')),
+            div(css ("input-group"), 
+                myInput (() => this.title, e => this.updateProperty (e)),
+                ! this.title ? undefined : myButton (() => this.add(), 'Add')
+            ),
             ul (
                 this.list.map (task =>
                     li (                                                

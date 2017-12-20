@@ -8,6 +8,8 @@ The individual samples are in the /src/client/app folder:
   * Demonstrates input controls
 * Composition
   * Demonstrates nested components
+* Tree
+  * Demonstrates nested array components and recursively nested components
 * GitSearch
   * Demonstrates async web call, debouncing
 * Todos

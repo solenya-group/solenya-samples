@@ -1,11 +1,13 @@
-﻿import { Component, div, button, ul, li, a, css, h2, main, br, h1, i } from 'pickle-ts'
-import { Type } from 'class-transformer'
-
-// todo: add similar version of this function to core pickle library
-export function commandLink(action: () => void, ...values: any[]) {
-    return a({href:"javascript:;", onclick: action}, ...values)
-}
+﻿import { i, css, commandButton, inputer, KeyValue } from 'pickle-ts'
 
 export function icon(name:string) {
     return i(css ("material-icons"), name)
+}
+
+export function myButton (onclick: () => void, content: any) {
+    return commandButton (onclick, content, css("m-2", "btn", "btn-outline-primary"))
+}
+
+export function myInput (prop: () => any, inputAction: (propertyChange: KeyValue) => any) {
+    return inputer (prop, inputAction, css("form-control", "m-2"))
 }

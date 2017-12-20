@@ -1,13 +1,14 @@
-﻿import { Component, css, div, ul, li, a, main, h1 } from 'pickle-ts'
+﻿import { Component, css, div, ul, li, a, main, h1, commandLink } from 'pickle-ts'
 import { Type } from 'class-transformer'
 import { Counter } from './counter'
 import { BMI } from './bmi'
 import { GitSearch } from './gitSearch'
-import { Composition } from './composition'
 import { Todos } from './todos'
 import { TableSample } from './tableSample'
 import { TimeTravel } from './timeTravel'
-import { commandLink } from '../util/util'
+import { Composition } from './composition'
+import { Tree } from './tree'
+
 import createHistory from 'history/createBrowserHistory'
 
 const history = createHistory()
@@ -15,12 +16,13 @@ const history = createHistory()
 export class Samples extends Component
 {
     @Type (() => Counter) counter = new Counter ()
-    @Type (() => BMI) bmi = new BMI ()
-    @Type (() => Composition) composition = new Composition ()
+    @Type (() => BMI) bmi = new BMI ()    
     @Type (() => GitSearch) gitSearch = new GitSearch ()
     @Type (() => Todos) todos = new Todos ()
     @Type (() => TableSample) tableSample = new TableSample ()
     @Type (() => TimeTravel) timeTravel = new TimeTravel ()
+    @Type (() => Composition) composition = new Composition ()
+    @Type (() => Tree) tree = new Tree ()
 
     activeAppName: string
 
@@ -45,12 +47,10 @@ export class Samples extends Component
             div (
                 div(css ("navbar", "navbar-expand-md", "navbar-dark", "bg-light"),
                     div (css ("container"),
-                        ul(css ("nav"),
+                        ul (css ("nav"),
                             this.childrenKeys().map (key =>
-                                li({class:"nav-item"},
-                                    commandLink  (() => this.changePage (key), css("nav-link"),
-                                        decamel (key)
-                                    )
+                                li(css("nav-item"),
+                                    commandLink  (() => this.changePage (key), decamel(key), css("nav-link"))
                                 )
                             ),            
                         )

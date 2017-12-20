@@ -1,6 +1,7 @@
-import { Component, KeyValue, inputer, div, p } from 'pickle-ts'
+import { Component, KeyValue, inputer, div } from 'pickle-ts'
 import { Type } from 'class-transformer'
 import { Table } from '../util/table'
+import { myInput } from '../util/util'
 
 export class TableSample extends Component
 {
@@ -16,7 +17,7 @@ export class TableSample extends Component
     view() {
         return (
             div (
-                p (inputer (() => this.filter, e => this.updateFilter(e))),
+                myInput (() => this.filter, e => this.updateFilter(e)),
                 this.table.view ()
             )
         )

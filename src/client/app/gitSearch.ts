@@ -1,6 +1,7 @@
-import { Component, slider, div, ul, li, a, key, inputer, KeyValue, isNullOrEmpty, p } from 'pickle-ts'
+import { Component, slider, div, ul, li, a, key, inputer, KeyValue, isNullOrEmpty } from 'pickle-ts'
 import { debounce } from 'lodash-decorators'
 import { Exclude } from 'class-transformer'
+import { myInput } from '../util/util'
 
 export class GitSearch extends Component
 {
@@ -9,7 +10,7 @@ export class GitSearch extends Component
 
     view () {       
         return div (
-            p (inputer (() => this.searchText, e => this.searchTextChange (e))),
+            myInput (() => this.searchText, e => this.searchTextChange (e)),
             ul (this.results.map (
                 result =>
                     li (
