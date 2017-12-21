@@ -4,8 +4,8 @@ export function icon(name:string) {
     return i(css ("material-icons"), name)
 }
 
-export function myButton (onclick: () => void, content: any) {
-    return commandButton (onclick, content, css("m-2", "btn", "btn-outline-primary"))
+export function myButton (onclick: () => void, ...values: any[]) {
+    return commandButton (onclick, css("m-2", "btn", "btn-outline-primary"), ...values)
 }
 
 export function myInput (prop: () => any, inputAction: (propertyChange: KeyValue) => any) {

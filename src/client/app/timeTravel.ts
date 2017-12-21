@@ -17,8 +17,8 @@ export class TimeTravel extends Component
             ),
             myButton (() => this.add(1), "+"),
             this.count,
-            div ("To save state to local storage on updates, edit this line in boot.cs, passing in true:"),
-            div (css ("code"), 'window["app"] = new App (Samples, "app", true)'),
+            div ("To save state to local storage on updates:"),
+            div (css ("code"), 'window.app.storage.autosave = true'),
             div ("One scenario when this is useful is developing/debugging. You can change your code, save it, and the page will automatically reload using your previous state.")
         )
     }

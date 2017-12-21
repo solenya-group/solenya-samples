@@ -50,11 +50,14 @@ export class Samples extends Component
                         ul (css ("nav"),
                             this.childrenKeys().map (key =>
                                 li(css("nav-item"),
-                                    commandLink  (() => this.changePage (key), decamel(key), css("nav-link"))
+                                    commandLink  (() => this.changePage (key),
+                                        css("nav-link"),
+                                        decamel(key)
+                                    )
                                 )
-                            ),            
+                            )         
                         )
-                    ),
+                    )
                 ),
                 main (
                     div (css ("container"),                        

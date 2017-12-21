@@ -4,6 +4,7 @@ import 'bootstrap'
 import { App } from 'pickle-ts'
 import { Samples } from '../app/samples'
 
-window["app"] = new App (Samples, "app")
+window["app"] = new App (Samples, "app")  
 
-module.hot.accept('../app/samples', () => { location.reload() })
+if (module.hot)
+    module.hot.accept('../app/samples', () => { location.reload() })
