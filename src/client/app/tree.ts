@@ -1,5 +1,4 @@
-﻿import { Component, css, div, commandButton, VNode } from 'pickle-ts'
-import { Counter } from './Counter'
+﻿import { Component, div, VNode } from 'pickle-ts'
 import { Type } from 'class-transformer'
 import { myButton } from '../util/util'
 

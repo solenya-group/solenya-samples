@@ -1,0 +1,135 @@
+﻿import { Component, VNode, css, commandButton, h2, div } from 'pickle-ts'
+import * as $ from "jquery"
+
+export enum ModalAction
+{
+    OK = "OK",
+    Cancel = "Cancel"
+}
+
+export type ModalProperties =
+{
+    title: string,
+    body: VNode<any>,
+    okText: string,
+    cancelText?: string
+    onClose?: (action: ModalAction) => boolean
+}
+
+export class Modal extends Component
+{
+    private _isOpen = false
+    private entryFocusId: string
+
+    get isOpen() {return this._isOpen }
+    
+    set isOpen (value: boolean) {
+        if (value)
+            this.update(() => {
+                this._isOpen = true
+                this.entryFocusId = document.activeElement.id
+            })
+        else
+            bootstrapModal (".modal", 'hide')        
+    }
+
+    onCreateElement () {
+        
+        $(".modal").on("shown.bs.modal", () => {
+            trapModalFocus (".modal")
+            var firstFocusableEl = $(".modal").find(focusableEls).first()[0]
+            setTimeout (() => firstFocusableEl.focus(), 1)
+        })
+
+        bootstrapModal (".modal", 'show')
+
+        $(".modal").on('hidden.bs.modal', () => {
+            this.update (() =>
+                this._isOpen = false
+            )
+            setTimeout(() => {                
+                if (this.entryFocusId)
+                    $("#" + this.entryFocusId).focus()
+            })
+        })
+    }
+
+    view (properties?: ModalProperties)
+    {       
+        if (! properties)
+            return div ("modal")
+
+        var onClose = (action: ModalAction) => {
+            if (! properties.onClose || properties.onClose (action)) {
+                this.isOpen = false
+                return true
+            }
+            return false
+        }
+
+        return (
+            div (css ("modal fade"),
+            {
+                oncreate: (element: Element) => this.onCreateElement (),
+                role: "dialog"
+            }, 
+                div (css ("modal-dialog"), { role : "document" },
+                    div (css ("modal-content"),                        
+                        div (css ("modal-header"),
+                            h2 (css ("modal-title"),
+                                properties.title
+                            )
+                        ),            
+                        div (css ("modal-body"),
+                            properties.body
+                        ),
+                        div (css ("modal-footer"),
+                            ! properties.okText ? undefined :
+                                commandButton (() => onClose (ModalAction.OK), properties.okText),
+                            ! properties.cancelText ? undefined :
+                                commandButton (() => onClose (ModalAction.Cancel), properties.cancelText)
+                        )
+                    )
+                )
+            )
+        )
+    }
+}
+
+function bootstrapModal(sel: string, arg: any) {
+    (<any>$(sel)).modal (arg)
+}
+
+const focusableEls = 'a, object, :input, iframe, [tabindex]'
+
+function trapModalFocus (element: string) 
+{
+    $(document).focusin (x => { // if gestures used instead of tab key, do our best to not focus outside modal
+        var focused = document.activeElement;
+        if ($(element).find($(focused)).length == 0) {
+            var lastFocusableEl = $(element).find(focusableEls).last()[0]
+            if (lastFocusableEl && lastFocusableEl.focus)
+                lastFocusableEl.focus()
+        }
+    })
+
+    $(element).on('keydown', function(e) {
+        if (e.key !== 'Tab' && e.keyCode !== 9) // tab
+            return
+        
+        var firstFocusableEl = $(element).find(focusableEls).first()[0]
+        var lastFocusableEl = $(element).find(focusableEls).last()[0]
+
+        if (e.shiftKey) {            
+            if (document.activeElement === firstFocusableEl) {
+                lastFocusableEl.focus()
+                e.preventDefault()
+            }
+        } else {
+            if (document.activeElement === lastFocusableEl) {
+                firstFocusableEl.focus()
+                e.preventDefault()
+            }
+        }
+    })
+}

@@ -1,4 +1,4 @@
-import { Component, div, commandButton, css } from 'pickle-ts'
+import { Component, div } from 'pickle-ts'
 import { myButton } from '../util/util'
 
 export class Counter extends Component

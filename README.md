@@ -17,7 +17,9 @@ The individual samples are in the /src/client/app folder:
 * Table
   * Demonstrates a custom table component (filter, sort)
 * Time Travel
-  * Demonstrats time travel and serializing to local storage
+  * Demonstrates time travel and serializing to local storage
+* Modal Sample
+  * Demonstrates a modal component
 * Samples
   * Sample to demonstrate samples, demonstrates history API integration
 
