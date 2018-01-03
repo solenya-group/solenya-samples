@@ -9,7 +9,6 @@ import { TimeTravel } from './timeTravel'
 import { Composition } from './composition'
 import { Tree } from './tree'
 import { ModalSample } from './modalSample'
-
 import createHistory from 'history/createBrowserHistory'
 
 const history = createHistory()
