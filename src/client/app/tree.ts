@@ -1,13 +1,14 @@
-﻿import { Component, div, VNode } from 'pickle-ts'
+﻿import { Component, div, commandButton, VElement } from 'pickle-ts'
+import { Counter } from './Counter'
 import { Type } from 'class-transformer'
 import { myButton } from '../util/util'
 
 export class Tree extends Component
 {    
     @Type (() => Tree) trees: Tree[] = []
-
-    view () : VNode<any> {
-        return div({ style : `padding-left:${this.branch().length*8}px`},
+    
+    view () : VElement {
+        return div({ style: `padding-left:${this.branch().length*8}px` },
             "Component",
             myButton (() => this.inc(), "+"),
             this.trees.length == 0 ? undefined : myButton (() => this.dec(), "-"),

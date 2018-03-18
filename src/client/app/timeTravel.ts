@@ -1,4 +1,4 @@
-import { Component, div, css } from 'pickle-ts'
+import { Component, div } from 'pickle-ts'
 import { myButton } from '../util/util'
 
 export class TimeTravel extends Component
@@ -8,7 +8,8 @@ export class TimeTravel extends Component
     view () {
         return div (
             div ("To time travel, in the console:"),
-            div(css ("code"),                
+            div ({class: "code"},
+                div ("var t = window.app.timeTravelOn = true"),
                 div ("var t = window.app.time"),
                 div ("t.prev()"),
                 div ("t.next()"),
@@ -18,7 +19,7 @@ export class TimeTravel extends Component
             myButton (() => this.add(1), "+"),
             this.count,
             div ("To save state to local storage on updates:"),
-            div (css ("code"), 'window.app.storage.autosave = true'),
+            div ({class: "code"}, 'window.app.storage.autosave = true'),
             div ("One scenario when this is useful is developing/debugging. You can change your code, save it, and the page will automatically reload using your previous state.")
         )
     }

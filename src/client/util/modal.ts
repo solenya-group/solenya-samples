@@ -1,4 +1,4 @@
-﻿import { Component, VNode, css, commandButton, h2, div } from 'pickle-ts'
+﻿import { Component, VElement, commandButton, h2, div } from 'pickle-ts'
 import * as $ from "jquery"
 
 export enum ModalAction
@@ -10,7 +10,7 @@ export enum ModalAction
 export type ModalProperties =
 {
     title: string,
-    body: VNode<any>,
+    body: VElement,
     okText: string,
     cancelText?: string
     onClose?: (action: ModalAction) => boolean
@@ -19,7 +19,7 @@ export type ModalProperties =
 export class Modal extends Component
 {
     private _isOpen = false
-    private entryFocusId: string
+    private entryFocusId = ""
 
     get isOpen() {return this._isOpen }
     
@@ -68,22 +68,22 @@ export class Modal extends Component
         }
 
         return (
-            div (css ("modal fade"),
+            div ({class: "modal fade"},
             {
                 oncreate: (element: Element) => this.onCreateElement (),
                 role: "dialog"
             }, 
-                div (css ("modal-dialog"), { role : "document" },
-                    div (css ("modal-content"),                        
-                        div (css ("modal-header"),
-                            h2 (css ("modal-title"),
+                div ({class:"modal-dialog", role : "document" },
+                    div ({class: "modal-content"},
+                        div ({class:"modal-header"},
+                            h2 ({class: "modal-title"},
                                 properties.title
                             )
                         ),            
-                        div (css ("modal-body"),
+                        div ({class: "modal-body"},
                             properties.body
                         ),
-                        div (css ("modal-footer"),
+                        div ({ class: "modal-footer"},
                             ! properties.okText ? undefined :
                                 commandButton (() => onClose (ModalAction.OK), properties.okText),
                             ! properties.cancelText ? undefined :

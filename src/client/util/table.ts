@@ -1,4 +1,4 @@
-import { Component, table, thead, tr, tbody, td, th, css } from 'pickle-ts'
+import { Component, table, thead, tr, tbody, td, th } from 'pickle-ts'
 import { orderBy } from 'lodash'
 import { Exclude } from 'class-transformer'
 import { icon } from './util'
@@ -13,7 +13,7 @@ export class Table extends Component
 
     view() {
         return (
-            table (css ("table"),
+            table ({class: "table"},
                 thead (
                     tr (
                         Object.keys (this.headers).map (key =>

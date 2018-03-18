@@ -3,9 +3,9 @@ import { myButton } from '../util/util'
 
 export class Counter extends Component
 {
-    count: number = 0
+    count = 0
 
-    view () {
+    view () {        
         return div (
             myButton (() => this.add(-1), "-"),
             this.count,
@@ -14,6 +14,6 @@ export class Counter extends Component
     }
     
     add (x: number) {
-        return this.update (() => this.count += x)
+        this.update (() => this.count += x)
     } 
 }

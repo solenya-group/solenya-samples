@@ -5,7 +5,7 @@ import { myInput } from '../util/util'
 
 export class TableSample extends Component
 {
-    filter: string
+    filter = ""
     @Type (() => Table) table = new Table()
 
     constructor() {

@@ -1,27 +1,27 @@
-import { Component, slider, div, css, label, form } from 'pickle-ts'
+import { Component, slider, div, label } from 'pickle-ts'
 
 export class BMI extends Component
 {
-    height: number = 180
-    weight: number = 80
+    height = 180
+    weight = 80
 
     calc () {
         return this.weight / (this.height * this.height / 10000)
     }
 
     view () {           
-        return form (  
+        return div (  
             this.mySlider (() => this.height, 100, 250, "Height", "cm"),
             this.mySlider (() => this.weight, 25, 150, "Weight", "kg"),
-            div (css ("display-2"), this.calc().toFixed(1))
+            div({class: "display-2"}, this.calc().toFixed(1))
         )
     }
 
     mySlider (prop: () => void, min: number, max: number, text: string, unit: string) {
         return (
-            div (css ("form-group"),
+            div({ class: "form-group"},
                 label (text),
-                slider (prop, min, max, 1, e => this.updateProperty (e), css ("form-control")),
+                slider (prop, min, max, 1, e => this.updateProperty(e), {class: "form-control"}),
                 prop() + " " + unit
             )
         )

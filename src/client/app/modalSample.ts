@@ -5,9 +5,9 @@ import { myButton } from '../util/util'
 
 export class ModalSample extends Component
 {
-    @Type (() => Modal) modal = new Modal()
     result = ""
     workingResult = ""
+    @Type (() => Modal) modal = new Modal()
 
     view() {
         return (
@@ -19,7 +19,6 @@ export class ModalSample extends Component
                     body: div (
                         p ("Modals can have input"),
                         p (inputer (() => this.workingResult, e => this.updateProperty(e))),
-                        p ("The HTML for the modal doesn't exist unless it's open."),
                         p ("Also notice that the tab is trapped within the modal.")
                     ),
                     title: "modal test",

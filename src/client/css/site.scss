@@ -1,16 +1,69 @@
 @import "~bootstrap/scss/bootstrap";
 
-.huge {
-    font-size:200%;
+html,
+body,
+#app {
+    height: 100%;
+    margin: 0
 }
+
+.xlayout {
+    display: flex;
+    flex: 0 1 auto;
+    flex-flow: column;
+    height: 100%;
+}
+
+.xheader {
+    flex: 0 1 auto;
+}
+
+.xcontent {
+    flex: 1 1 auto;
+}
+
+.xfooter {
+    flex: 0 1 auto;
+}
+
 a {
-    vertical-align:middle;
-    display:inline-block;
+    vertical-align: middle;
+    display: inline-block;
 }
+
 .material-icons {
     font-size: 20px;
 }
+
+.my-heading {
+    background-image: url('/dist//pickle.png');
+    background-size: cover;
+    width: 100px;
+    height: 100px;
+}
+
+.left-pane {
+    width: 250px;
+    z-index: 1000;
+    background-color: white;
+}
+
+.menu-heading {
+    padding: 14px;
+    font-weight: bold;
+    font-size: 120%;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0px;
+}
+
+.huge {
+    font-size: 200%;
+}
+
 .code {
-    font-family:'Courier New';
+    font-family: 'Courier New';
     padding: 15px;
 }
