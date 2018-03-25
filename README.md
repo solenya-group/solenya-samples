@@ -20,6 +20,10 @@ The individual samples are in the /src/client/app folder:
   * Demonstrates time travel and serializing to local storage
 * Modal Sample
   * Demonstrates a modal component
+* Animate Element
+  * Demonstrates animating a single element
+* Animate List
+  * Demonstrates animating a list
 * Samples
   * Sample to demonstrate samples, demonstrates history API integration
 
@@ -34,5 +38,6 @@ The sample uses:
 * history
 * ASP.NET Core 2.0 w/ Microsoft.SpaServices
   * Samples easily adaptable to node.js
+* popmotion-pose for animations
 
 The /src/boot/start.ts file demonstrates app setup, serializing to local storage & hot module reloading.
