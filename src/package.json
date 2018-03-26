@@ -36,7 +36,7 @@
     "precss": "2.0.0",
     "lodash": "4.17.4",
     "@types/lodash": "4.14.91",
-    "popmotion-pose": "1.0.18",
+    "popmotion-pose": "1.0.19", 
     "es5-shim": "4.5.10",
     "es6-shim": "0.35.3"
   }

@@ -1,5 +1,5 @@
 ﻿import { VElement, VAttributes, LifecycleListener, lifecycleListener } from 'pickle-ts'
-import pose from 'popmotion-pose'
+import pose, { Poser } from 'popmotion-pose'
 
 export function slideRight (el: VElement) {
     return openClose ({
@@ -36,19 +36,14 @@ export function openClose (props: any, vel: VElement)
 export function slideChildren (vel: VElement) : VElement
 {
     return lifecycleListener (vel, el => {        
+        var posers: Poser[]
         return {            
             beforeUpdate () {                
-                for (var c of Array.from(el.childNodes) as Element[]) {
-                     var poser = c["poser"] = pose(c, {})
-                     poser.measure()
-                }
+                posers = Array.from (el.childNodes).map (c => pose (c as Element, {}))
+                posers.forEach (p => p.measure())
             },
             afterUpdate() {
-                for (var c of Array.from(el.childNodes) as Element[]) {
-                    var poser = c["poser"]
-                    if (poser)
-                        poser.flip ()                       
-                }
+                posers.forEach (p => p.flip())
             }
         }               
     })   
