@@ -3,6 +3,8 @@ import 'es5-shim'
 import 'es6-shim'
 import 'whatwg-fetch'
 
+import 'web-animations-js'
+
 import 'promise-polyfill'
 var Promise = require ('promise-polyfill') 
 var win = <any>window

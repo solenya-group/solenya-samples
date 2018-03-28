@@ -4,18 +4,17 @@ import { Exclude } from 'class-transformer'
 import { slideChildren } from '../util/animations'
 import { range, shuffle } from 'lodash'
 
-export class AnimateList extends Component
-{
-    @Exclude() items = range (1, 20)
+export class AnimateList extends Component {
+    @Exclude() items = shuffle (range(1, 101))
 
-    view () {        
+    view() {
         return div(
-            myButton (() => this.shuffle (), "shuffle"),       
-            slideChildren (ul (this.items.map (n => li ({ key: n }, n))))
+            myButton(() => this.sort(), "shuffle"),
+            slideChildren(div(this.items.map(n => div({ key: n, style:"display:inline-block;width:40px" }, n))))
         )
     }
 
-    shuffle() {
+    sort() {
         this.update (() => this.items = shuffle (this.items))
     }
 }

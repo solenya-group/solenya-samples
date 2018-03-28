@@ -11,7 +11,7 @@ import { Tree } from './tree'
 import { ModalSample } from './modalSample'
 import { AnimateElement } from './animateElement'
 import { AnimateList } from './animateList'
-import { slideRight } from '../util/animations'
+import { slide } from '../util/animations'
 import createHistory from 'history/createBrowserHistory'
 
 const history = createHistory()
@@ -27,8 +27,8 @@ export class Samples extends Component
     @Type (() => Composition) composition = new Composition ()
     @Type (() => Tree) tree = new Tree ()
     @Type (() => ModalSample) modalSample = new ModalSample()
-    @Type (() => AnimateElement) animteElement = new AnimateElement ()
-    @Type (() => AnimateList) animteList = new AnimateList ()
+    @Type (() => AnimateElement) animateElement = new AnimateElement ()
+    @Type (() => AnimateList) animateList = new AnimateList ()
 
     current: string
 
@@ -62,7 +62,7 @@ export class Samples extends Component
                             )         
                         )
                     ),                    
-                    slideRight (
+                    slide (
                         div ({key: this.current},
                             div({class: "col"},
                                 h1 ({ class: "py-3" }, decamel (this.current)),                        

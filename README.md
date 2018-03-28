@@ -38,6 +38,6 @@ The sample uses:
 * history
 * ASP.NET Core 2.0 w/ Microsoft.SpaServices
   * Samples easily adaptable to node.js
-* popmotion-pose for animations
+* web-animations-api w/ web-animations-js shim for animations
 
 The /src/boot/start.ts file demonstrates app setup, serializing to local storage & hot module reloading.
