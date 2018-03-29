@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "dependencies": {
-    "pickle-ts": "0.1.6", 
+    "pickle-ts": "0.1.7",
     "typescript": "^2.6.2",
     "@types/webpack-env": "1.13.0",
     "reflect-metadata": "0.1.10",

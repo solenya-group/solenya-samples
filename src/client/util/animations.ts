@@ -1,13 +1,13 @@
-﻿import { VElement, VAttributes, VLifecycle, lifecycleListener, div } from 'pickle-ts'
+﻿import { VElement, VAttributes, VLifecycle, div } from 'pickle-ts'
 
 type SlideState = {
     a: HTMLElement | SVGElement
     rect: ClientRect
 }
 
-export function slide (vel: VElement, horizontal = true, forwards = true, duration = 500)
+export function slide (horizontal = true, forwards = true, duration = 500) : VLifecycle
 {    
-    return lifecycleListener (div (vel), {
+    return {
         onbeforeupdate (el: Element) {
             const a = el.firstChild as HTMLElement
             el["state_slide"] = <SlideState>{
@@ -35,12 +35,12 @@ export function slide (vel: VElement, horizontal = true, forwards = true, durati
             b["animate"]([{ opacity: 0 }, { opacity:1 }], { duration, easing: 'ease-out' }) 
             anim.onfinish = (() => el.removeChild (a))
         }
-    })
+    }
 }
 
-export function slideChildren (vel: VElement) : VElement
+export function slideChildren (): VLifecycle
 {
-    return lifecycleListener (vel, {                       
+    return {                       
         onbeforeupdate (el: Element) {          
             let els = el["state_slideChildren"] = Array.from(el.childNodes).map(c => (c as HTMLElement))
             els.forEach (c => measure(c))
@@ -49,7 +49,7 @@ export function slideChildren (vel: VElement) : VElement
             let els = el["state_slideChildren"] as HTMLElement[]
             els.forEach (c => flip (c))
         }                    
-    }) 
+    }
 }
 
 export function measure(el: any) {

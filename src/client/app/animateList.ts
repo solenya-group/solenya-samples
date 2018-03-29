@@ -10,7 +10,7 @@ export class AnimateList extends Component {
     view() {
         return div(
             myButton(() => this.sort(), "shuffle"),
-            slideChildren(div(this.items.map(n => div({ key: n, style:"display:inline-block;width:40px" }, n))))
+            div (slideChildren(), this.items.map(n => div({ key: n, style:"display:inline-block;width:40px" }, n)))
         )
     }
 

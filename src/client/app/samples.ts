@@ -62,7 +62,7 @@ export class Samples extends Component
                             )         
                         )
                     ),                    
-                    slide (
+                    div (slide (),
                         div ({key: this.current},
                             div({class: "col"},
                                 h1 ({ class: "py-3" }, decamel (this.current)),                        
