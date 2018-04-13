@@ -1,5 +1,6 @@
 import { Component, div } from 'pickle-ts'
 import { myButton } from '../util/util'
+import { codeClass } from '../util/styles'
 
 export class TimeTravel extends Component
 {
@@ -8,7 +9,7 @@ export class TimeTravel extends Component
     view () {
         return div (
             div ("To time travel, in the console:"),
-            div ({class: "code"},
+            div ({ class: codeClass },
                 div ("var t = window.app.timeTravelOn = true"),
                 div ("var t = window.app.time"),
                 div ("t.prev()"),

@@ -24,6 +24,8 @@ The individual samples are in the /src/client/app folder:
   * Demonstrates animating a single element
 * Animate List
   * Demonstrates animating a list
+* Stopwatch
+  * Demonstrates a timer
 * Samples
   * Sample to demonstrate samples, demonstrates history API integration
 
@@ -31,6 +33,7 @@ The sample uses:
 
 * Webpack 
 * Webpack hot reloading
+* typestyle
 * scss
 * CSS Framework: Bootstrap 4
 * Icons: material icons ( https://material.io/icons/ )

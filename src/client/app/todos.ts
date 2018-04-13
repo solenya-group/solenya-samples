@@ -1,6 +1,6 @@
 ﻿import { Component, div, ul, li, inputer, commandButton, commandLink } from 'pickle-ts'
 import { icon, myButton, myInput } from '../util/util'
-import { Exclude } from 'class-transformer';
+import { Exclude } from 'class-transformer'
 
 export class Todos extends Component
 {    

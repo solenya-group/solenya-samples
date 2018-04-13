@@ -11,8 +11,11 @@ import { Tree } from './tree'
 import { ModalSample } from './modalSample'
 import { AnimateElement } from './animateElement'
 import { AnimateList } from './animateList'
+import { Stopwatch } from './stopwatch'
+
 import { slide } from '../util/animations'
 import createHistory from 'history/createBrowserHistory'
+import { layout, layoutHeader, layoutContent, layoutFooter } from '../util/styles'
 
 const history = createHistory()
 
@@ -29,6 +32,7 @@ export class Samples extends Component
     @Type (() => ModalSample) modalSample = new ModalSample()
     @Type (() => AnimateElement) animateElement = new AnimateElement ()
     @Type (() => AnimateList) animateList = new AnimateList ()
+    @Type (() => Stopwatch) stopwatch = new Stopwatch ()
 
     current: string
 
@@ -47,31 +51,31 @@ export class Samples extends Component
 
     view () {
         return (
-            div ({class: "xlayout"},
-                div ({class: "xrow xheader"}),
-                main ({class: "xrow xcontent d-flex"},
-                    div ({class: "left-pane p-3"},
-                        div ({ class: "my-heading mb-3"}),                        
+            div ({ class: layout },
+                div ({ class: layoutHeader }),
+                main ({ class: layoutContent + ' d-flex'},
+                    div ({ class: 'p-3', style: {width: '250px', zIndex: 1000, backgroundColor: 'white' } },
+                        div ({ class: 'mb-3', style: {backgroundImage: `url('/dist//pickle.png')`, backgroundSize: 'cover', width: '100px', height: '100px'} } ),
                         ul (
                             this.childrenKeys().map (key =>
-                                li({class: "nav-item"},
-                                    commandLink (() => this.changePage (key), {class: "nav-link"},
+                                li ({ class: 'nav-item'},
+                                    commandLink (() => this.changePage (key), {class: 'nav-link'},
                                         decamel(key)
                                     )
                                 )
-                            )         
+                            )
                         )
                     ),                    
                     div (slide (),
-                        div ({key: this.current},
-                            div({class: "col"},
-                                h1 ({ class: "py-3" }, decamel (this.current)),                        
+                        div ({ key: this.current },
+                            div ({ class: 'col'},
+                                h1 ({ class: 'py-3' }, decamel (this.current)),
                                 this[this.current].view()
                             )
                         )
                     )
                 ),
-                div({class: "xrow xfooter"})
+                div ({ class: layoutFooter })
             )
         )
     }    

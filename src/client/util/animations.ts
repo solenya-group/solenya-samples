@@ -1,39 +1,65 @@
 ﻿import { VElement, VAttributes, VLifecycle, div } from 'pickle-ts'
+import { Exclude } from 'class-transformer'
 
 type SlideState = {
     a: HTMLElement | SVGElement
-    rect: ClientRect
+    aRect: ClientRect
+    scrollX: number
+    scrollY: number
 }
 
-export function slide (horizontal = true, forwards = true, duration = 500) : VLifecycle
+export function slide (horizontal = true, forwards = true, duration = 1000, adjustScroll = false) : VLifecycle
 {    
     return {
-        onbeforeupdate (el: Element) {
+        onbeforeupdate (el: Element)
+        {
             const a = el.firstChild as HTMLElement
             el["state_slide"] = <SlideState>{
-                a,
-                rect : a.getBoundingClientRect()
-            }
+                a,                
+                aRect : a.getBoundingClientRect(),
+                scrollX : window.scrollX,
+                scrollY: window.scrollY
+            }            
         },
-        onafterupdate (el: Element) {            
+        onafterupdate (el: Element)
+        {                         
             const b = el.firstChild as HTMLElement
-            const {a, rect } = el["state_slide"] as SlideState                        
+            const {a, aRect, scrollX, scrollY } = el["state_slide"] as SlideState                        
             if (a == b)
                 return
-
-            let translate = (n: number) => `translate${horizontal ? "X" : "Y"}(${n}px)`
+                                   
+            let bRect = b.getBoundingClientRect()
 
             let slideAmount = horizontal ?
-                (forwards ? rect.width : -b.getBoundingClientRect().width) :
-                (forwards ? rect.height : - b.getBoundingClientRect().height);
-
-            el.insertBefore (a, b)
+                (forwards ? -aRect.width : bRect.width) :
+                (forwards ? -aRect.height : bRect.height)
+            
+            var scrollAdjust = 0
+            if (adjustScroll && forwards) {
+                scrollAdjust = Math.abs(horizontal ? Math.min(0, aRect.left) : Math.min(0, aRect.top))
+                slideAmount += scrollAdjust
+            }
+            
+            el.insertBefore (a, null) 
             a.style.position = "absolute"
-            a.style.transform = translate (-slideAmount)
-            var anim = el["animate"]([{ transform: translate (slideAmount) }, {transform: 'none'}], { duration, easing: 'ease-out' }) 
+            a.style.left = a.style.top = "0px"
+            a.style.width = "" + aRect.width + "px"
+            a.style.height = "" + aRect.height + "px"            
+            a.style.transform = getTranslate (slideAmount - scrollAdjust, horizontal)
+            a.style.opacity = '0'
+
+            if (adjustScroll)
+                window.scrollTo (0,0)
+
+            var anim = el["animate"]([{transform: getTranslate(-slideAmount, horizontal)}, { transform: 'none' }], { duration, easing: 'ease-out' }) 
+            
             a["animate"]([{ opacity: 1 }, { opacity:0 }], { duration, easing: 'ease-out' }) 
             b["animate"]([{ opacity: 0 }, { opacity:1 }], { duration, easing: 'ease-out' }) 
-            anim.onfinish = (() => el.removeChild (a))
+            
+            anim.onfinish = (() =>
+            {                                  
+                el.removeChild (a)                           
+            })
         }
     }
 }
@@ -68,4 +94,8 @@ export function flip (el: any) {
         ],
         { duration: 1000, easing: 'ease-out' }
     )
+}
+
+export function getTranslate (n: number, horizontal: boolean) {
+    return `translate${horizontal ? "X" : "Y"}(${n}px)`
 }

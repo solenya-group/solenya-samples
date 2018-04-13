@@ -1,6 +1,7 @@
 import { Component, div, radioGroup } from 'pickle-ts'
 import { myButton } from '../util/util'
 import { slide, slideChildren } from '../util/animations'
+import { style } from 'typestyle/lib'
 
 enum Direction { Horizontal = "Horizontal", Vertical = "Vertical" }
 
@@ -17,7 +18,7 @@ export class AnimateElement extends Component
             myButton (() => this.add(+1), "next"),
             div (slide (this.option == "Horizontal", this.forwards),
                 div (
-                    { key: this.count, class:"sprite", style: "background-color:" + (this.count % 2 == 0 ? "red" : "purple")},
+                    { key: this.count, class: sprite (this.count % 2 == 0) },
                 )
             )
         )
@@ -30,3 +31,11 @@ export class AnimateElement extends Component
         })
     }
 }
+
+const sprite = (isEven: boolean) => style ({
+    padding: '75px',
+    backgroundImage: `url('/dist//pickle.png')`,
+    backgroundSize: 'cover',
+    position: 'absolute',
+    backgroundColor: isEven ? "red" : "purple"
+})
