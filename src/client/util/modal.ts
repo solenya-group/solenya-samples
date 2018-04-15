@@ -33,7 +33,7 @@ export class Modal extends Component
             bootstrapModal (".modal", 'hide')        
     }
 
-    onAddElement () {
+    onAttached () {
         
         $(".modal").on("shown.bs.modal", () => {
             trapModalFocus (".modal")
@@ -70,7 +70,7 @@ export class Modal extends Component
         return (
             div ({class: "modal fade"},
             {
-                onadd: (element: Element) => this.onAddElement (),
+                onAttached: (element: Element) => this.onAttached (),
                 role: "dialog"
             }, 
                 div ({class:"modal-dialog", role : "document" },

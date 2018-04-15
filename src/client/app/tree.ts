@@ -8,7 +8,7 @@ export class Tree extends Component
     @Type (() => Tree) trees: Tree[] = []
     
     view () : VElement {
-        return div({ style: { paddingLeft: "" + this.branch().length / 2 + "rem" } },
+        return div ({ style: { paddingLeft: "" + this.branch().length / 2 + "rem" } },
             "Component",
             myButton (() => this.inc(), "+"),
             this.trees.length == 0 ? undefined : myButton (() => this.dec(), "-"),

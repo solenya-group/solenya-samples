@@ -54,12 +54,12 @@ export class Samples extends Component
             div ({ class: layout },
                 div ({ class: layoutHeader }),
                 main ({ class: layoutContent + ' d-flex'},
-                    div ({ class: 'p-3', style: {width: '250px', zIndex: 1000, backgroundColor: 'white' } },
-                        div ({ class: 'mb-3', style: {backgroundImage: `url('/dist//pickle.png')`, backgroundSize: 'cover', width: '100px', height: '100px'} } ),
+                    div ({ class: 'p-3', style: { width: '250px', zIndex: 1000, backgroundColor: 'white' } },
+                        div ({ class: 'mb-3', style: { backgroundImage: `url('/dist//pickle.png')`, backgroundSize: 'cover', width: '100px', height: '100px' } } ),
                         ul (
                             this.childrenKeys().map (key =>
                                 li ({ class: 'nav-item'},
-                                    commandLink (() => this.changePage (key), {class: 'nav-link'},
+                                    commandLink (() => this.changePage (key), { class: 'nav-link' },
                                         decamel(key)
                                     )
                                 )

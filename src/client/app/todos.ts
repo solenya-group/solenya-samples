@@ -22,7 +22,7 @@ export class Todos extends Component
 
     view () {
         return div (
-            div({class: "input-group"}, 
+            div ({ class: "input-group" }, 
                 myInput (() => this.title, e => this.updateProperty (e)),
                 ! this.title ? undefined : myButton (() => this.add(), 'Add')
             ),

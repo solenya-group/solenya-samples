@@ -11,7 +11,7 @@ type SlideState = {
 export function slide (horizontal = true, forwards = true, duration = 1000, adjustScroll = false) : VLifecycle
 {    
     return {
-        onbeforeupdate (el: Element)
+        onBeforeUpdate (el)
         {
             const a = el.firstChild as HTMLElement
             el["state_slide"] = <SlideState>{
@@ -21,7 +21,7 @@ export function slide (horizontal = true, forwards = true, duration = 1000, adju
                 scrollY: window.scrollY
             }            
         },
-        onafterupdate (el: Element)
+        onUpdated (el)
         {                         
             const b = el.firstChild as HTMLElement
             const {a, aRect, scrollX, scrollY } = el["state_slide"] as SlideState                        
@@ -67,11 +67,11 @@ export function slide (horizontal = true, forwards = true, duration = 1000, adju
 export function slideChildren (): VLifecycle
 {
     return {                       
-        onbeforeupdate (el: Element) {          
+        onBeforeUpdate (el) {          
             let els = el["state_slideChildren"] = Array.from(el.childNodes).map(c => (c as HTMLElement))
             els.forEach (c => measure(c))
         },
-        onafterupdate (el: Element) {
+        onUpdated (el) {
             let els = el["state_slideChildren"] as HTMLElement[]
             els.forEach (c => flip (c))
         }                    
