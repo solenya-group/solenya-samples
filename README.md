@@ -26,6 +26,10 @@ The individual samples are in the /src/client/app folder:
   * Demonstrates animating a list
 * Stopwatch
   * Demonstrates a timer
+* Tab Sample
+  * Demonstrates a tab control, using bootstrap css
+* Relativity
+  * Simulates the special theory of relativity
 * Samples
   * Sample to demonstrate samples, demonstrates history API integration
 
