@@ -4,7 +4,7 @@ import { AutoComplete } from '../util/autoComplete'
 
 export class AutoCompleteSample extends Component
 {
-    @Type (() => AutoCompleteSample) languages = new AutoComplete()
+    @Type (() => AutoComplete) languages = new AutoComplete()
     
     constructor () {       
         super()
