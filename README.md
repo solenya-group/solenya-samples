@@ -30,6 +30,8 @@ The individual samples are in the /src/client/app folder:
   * Demonstrates a tab control, using bootstrap css
 * Relativity
   * Simulates the special theory of relativity
+* Autocomplete
+  * Autocomplete component
 * Samples
   * Sample to demonstrate samples, demonstrates history API integration
 

@@ -13,11 +13,12 @@ import { AnimateElement } from './animateElement'
 import { AnimateList } from './animateList'
 import { Stopwatch } from './stopwatch'
 import { TabSample } from './tabSample'
+import { Relativity } from './relatvity'
+import { AutoCompleteSample } from './autoCompleteSample'
 
 import { slide } from '../util/animations'
 import createHistory from 'history/createBrowserHistory'
 import { layout, layoutHeader, layoutContent, layoutFooter } from '../util/styles'
-import { Relativity } from './relatvity';
 
 const history = createHistory()
 
@@ -37,6 +38,7 @@ export class Samples extends Component
     @Type (() => Stopwatch) stopwatch = new Stopwatch ()
     @Type (() => TabSample) tabSample = new TabSample ()
     @Type (() => Relativity) relativity = new Relativity ()
+    @Type (() => AutoCompleteSample) autoComplete = new AutoCompleteSample()
 
     current: string
 

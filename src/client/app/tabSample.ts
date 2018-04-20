@@ -6,7 +6,7 @@ export class TabSample extends ComponentTabGroup
 {  
     @Type (() => MyTabContent) apple = new MyTabContent ("Apples are delicious")
     @Type (() => MyTabContent) banana = new MyTabContent ("But bananas are ok")
-    @Type (() => MyTabContent) cantelope = new MyTabContent ("Cantelopes that's what I'm talking about.")
+    @Type (() => MyTabContent) cantaloupe = new MyTabContent ("Cantaloupe that's what I'm talking about.")
 }
 
 class MyTabContent extends Component {
