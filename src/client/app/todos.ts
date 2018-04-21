@@ -1,4 +1,4 @@
-﻿import { Component, div, ul, li, inputText , commandLink, span, input } from 'pickle-ts'
+﻿import { Component, div, ul, li, inputText, commandLink, span, input } from 'pickle-ts'
 import { myInput, icon } from '../util/util'
 import { style } from 'typestyle'
 import { NestedCSSProperties } from 'typestyle/lib/types';
@@ -11,12 +11,12 @@ export class Todos extends Component
 {    
     list: TaskItem[] = []
     currentTaskType = TaskType.all
-    title?: string
+    currentText?: string
 
     addTask () {
         this.update(() => {            
-            this.list = this.list.concat({name: this.title!, done: false})            
-            this.title = undefined
+            this.list = this.list.concat({name: this.currentText!, done: false})            
+            this.currentText = undefined
         })  
     }
     
@@ -73,7 +73,7 @@ export class Todos extends Component
         return (
             div ({ class: "input-group" }, 
                 myInput (
-                    () => this.title,
+                    () => this.currentText,
                     e => this.updateProperty (e),
                     {
                         class: placeholderClass,
@@ -92,8 +92,8 @@ export class Todos extends Component
         return (
              ul (
                 this.filteredList().map (task =>
-                    li (                        
-                        commandLink(() => this.removeTask(task), { class: hoverClass }, icon ("close")),
+                    li ({class: hoverArea }, 
+                        commandLink(() => this.removeTask(task), { class: showOnHover }, icon ("close")),
                         input ({
                             type: "checkbox",
                             value: task.done ? "checked" : undefined,
@@ -112,19 +112,11 @@ export class Todos extends Component
         return div (
             this.linksView(),
             this.inputView(),
-            this.listView()
+            this.listView(),
+            div ("To autosave the todo list to local storage, go to the console and type: window.app.storage.autosave = true")
         )
     }
 }
-
-const hoverClass = style ({
-    color: "transparent",
-    $nest: {
-        "&:hover": {
-            color: "black"
-        }
-    }
-})
 
 const placeholderClass = style ({
     $nest: {
@@ -132,4 +124,20 @@ const placeholderClass = style ({
             color: "lightgray"
         }
     }
+})
+
+
+export const showOnHover = style ({})
+
+export const hoverArea = style (<any>{    
+    $nest: {
+        ['.'+showOnHover]: {
+            color: "transparent"
+        },
+        "&:hover": {
+          ['.'+showOnHover] : {
+             color: "blue"
+          }
+        } 
+      }  
 })
