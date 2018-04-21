@@ -1,4 +1,4 @@
-import { Component, KeyValue, inputer, div } from 'pickle-ts'
+import { Component, KeyValue, inputText, div } from 'pickle-ts'
 import { Type } from 'class-transformer'
 import { Table } from '../util/table'
 import { myInput } from '../util/util'

@@ -1,4 +1,4 @@
-import { Component, slider, div, ul, li, a, key, inputer, KeyValue, isNullOrEmpty } from 'pickle-ts'
+import { Component, slider, div, ul, li, a, key, inputText, KeyValue, isNullOrEmpty } from 'pickle-ts'
 import { debounce } from 'lodash-decorators'
 import { Exclude } from 'class-transformer'
 import { myInput } from '../util/util'

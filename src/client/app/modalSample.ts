@@ -1,4 +1,4 @@
-import { Component, inputer, div, p } from 'pickle-ts'
+import { Component, inputText, div, p } from 'pickle-ts'
 import { Type } from 'class-transformer'
 import { Modal, ModalAction} from '../util/modal'
 import { myButton } from '../util/util'
@@ -18,7 +18,7 @@ export class ModalSample extends Component
                 {
                     body: div (
                         p ("Modals can have input"),
-                        p (inputer (() => this.workingResult, e => this.updateProperty(e))),
+                        p (inputText (() => this.workingResult, e => this.updateProperty(e))),
                         p ("Also notice that the tab is trapped within the modal.")
                     ),
                     title: "modal test",

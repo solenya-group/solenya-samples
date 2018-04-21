@@ -1,4 +1,4 @@
-import { Component, HValue, div, inputer, KeyValue, isNullOrEmpty, commandButton, span, commandLink } from 'pickle-ts'
+import { Component, HValue, div, inputText, KeyValue, isNullOrEmpty, commandButton, span, commandLink } from 'pickle-ts'
 import { debounce } from 'lodash-decorators'
 import { Exclude } from 'class-transformer'
 import { icon } from '../util/util'
@@ -31,7 +31,7 @@ export class AutoComplete extends Component
 
     private searchTextView (inputProps?: HValue) {
         return (
-            inputer(
+            inputText (
                 () => this.searchText,
                 e => this.searchTextChange (e),
                 {id : this.id},
