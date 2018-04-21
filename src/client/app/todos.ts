@@ -1,7 +1,6 @@
 ﻿import { Component, div, ul, li, inputText, commandLink, span, input } from 'pickle-ts'
 import { myInput, icon } from '../util/util'
 import { style } from 'typestyle'
-import { NestedCSSProperties } from 'typestyle/lib/types';
 
 enum TaskType { active = "active", done = "done", all = "all" }
 

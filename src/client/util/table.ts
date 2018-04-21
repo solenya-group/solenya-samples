@@ -18,10 +18,13 @@ export class Table extends Component
                     tr (
                         Object.keys (this.headers).map (key =>
                             th (
-                                {onclick: () => this.sort (key)},
+                                {
+                                    style: {cursor : "pointer"},
+                                    onclick: () => this.sort (key)
+                                },
                                 this.headers[key],
                                 this.sortKey != key ? null :
-                                    icon (this.sortDirection ? "arrow_downward" : "arrow_upward")
+                                    icon(this.sortDirection ? "arrow_downward" : "arrow_upward", { style: { transform: "translateY(0.25rem)" } })
                             )
                         )
                     )

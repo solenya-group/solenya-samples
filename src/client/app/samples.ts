@@ -40,12 +40,13 @@ export class Samples extends Component
     @Type (() => Relativity) relativity = new Relativity ()
     @Type (() => AutoCompleteSample) autoComplete = new AutoCompleteSample()
 
+    @Exclude()
     current: string
 
     constructor()
     {
         super ()   
-        this.current = location.pathname == "/" ? "counter" : location.pathname.substring(1)
+        this.current = location.pathname == "/" ? "relativity" : location.pathname.substring(1)
     }
 
     changePage (name: string)
