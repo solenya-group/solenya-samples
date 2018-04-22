@@ -22,6 +22,8 @@ import { layout, layoutHeader, layoutContent, layoutFooter } from '../util/style
 
 const history = createHistory()
 
+const path = () => location.pathname.substring (1)
+
 export class Samples extends Component
 {
     @Type (() => Counter) counter = new Counter ()
@@ -41,18 +43,19 @@ export class Samples extends Component
     @Type (() => AutoCompleteSample) autoComplete = new AutoCompleteSample()
 
     @Exclude()
-    current: string
-
-    constructor()
-    {
-        super ()   
-        this.current = location.pathname == "/" ? "relativity" : location.pathname.substring(1)
+    current = ""
+    
+    attached() {
+        if (path() == "")
+            history.replace ("relativity")
+        this.current = path()
+        history.listen (x => this.changePage (path()))
     }
 
     changePage (name: string)
     {
         this.update (() => this.current = name)
-        if (history.location.pathname != "/" + name)                
+        if (path() != name)                
             history.push (name) 
     }
 
