@@ -1,5 +1,4 @@
-﻿import { VElement, VAttributes, VLifecycle, div } from 'pickle-ts'
-import { Exclude } from 'class-transformer'
+﻿import { VLifecycle } from 'pickle-ts'
 
 type SlideState = {
     a: HTMLElement | SVGElement

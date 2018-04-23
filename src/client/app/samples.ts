@@ -42,8 +42,7 @@ export class Samples extends Component
     @Type (() => Relativity) relativity = new Relativity ()
     @Type (() => AutoCompleteSample) autoComplete = new AutoCompleteSample()
 
-    @Exclude()
-    current = ""
+    @Exclude() current = ""
     
     attached() {
         if (path() == "")
@@ -60,6 +59,8 @@ export class Samples extends Component
     }
 
     view () {
+        document.title = `Pickle - ${this.current} sample`
+
         return (
             div ({ class: layout },
                 div ({ class: layoutHeader }),

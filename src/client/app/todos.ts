@@ -1,6 +1,7 @@
 ﻿import { Component, div, ul, li, inputText, commandLink, span, input } from 'pickle-ts'
 import { myInput, icon } from '../util/util'
 import { style } from 'typestyle'
+import { slideChildren } from '../util/animations'
 
 enum TaskType { active = "active", done = "done", all = "all" }
 
@@ -78,7 +79,7 @@ export class Todos extends Component
                         class: placeholderClass,
                         placeholder: "What needs to be done?",
                         onkeyup: (e: any) => {
-                            if (e.keyCode == 13)
+                            if (e.keyCode == 13 && ! this.list.find (l => l.name == this.currentText))
                                 this.addTask ()
                         }
                     }
@@ -89,13 +90,13 @@ export class Todos extends Component
 
     listView() {
         return (
-             ul (
+            ul(slideChildren(),
                 this.filteredList().map (task =>
-                    li ({class: hoverArea }, 
+                    li ({ key: task.name, class: hoverArea }, 
                         commandLink(() => this.removeTask(task), { class: showOnHover }, icon ("close")),
                         input ({
                             type: "checkbox",
-                            value: task.done ? "checked" : undefined,
+                            checked: task.done ? "checked" : undefined,
                             onclick: () => this.toggleTaskStatus (task)
                         }),
                         span ({class: "pl-1"},
@@ -124,7 +125,6 @@ const placeholderClass = style ({
         }
     }
 })
-
 
 export const showOnHover = style ({})
 
