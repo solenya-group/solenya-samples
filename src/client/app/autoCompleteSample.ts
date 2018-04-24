@@ -6,16 +6,13 @@ export class AutoCompleteSample extends Component
 {
     @Type (() => AutoComplete) languages = new AutoComplete()
     
-    constructor () {       
-        super()
+    attached() {
         this.languages.isMultiSelect = true
-        this.languages.suggestor = async searchText => {
-            return languages.filter (l => l.indexOf (searchText) != -1)
-        }
+        this.languages.suggestor = async searchText => languages // for remote/large lists would filter by searchText
     }
 
     view() {
-        return this.languages.view()
+        return this.languages.view ({class: "form-control"})
     }
 }
 
