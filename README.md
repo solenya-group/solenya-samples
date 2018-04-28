@@ -36,6 +36,8 @@ The individual samples are in the /src/client/app folder:
   * Simulates the special theory of relativity
 * Autocomplete
   * Autocomplete component
+* Validation
+  * Validation, input functions
 * Samples
   * Sample to demonstrate samples, demonstrates history API integration
 
@@ -52,5 +54,6 @@ The sample uses:
 * ASP.NET Core 2.0 w/ Microsoft.SpaServices
   * Samples easily adaptable to node.js
 * web-animations-api w/ web-animations-js shim for animations
+* class-validator
 
 The /src/boot/start.ts file demonstrates app setup, serializing to local storage & hot module reloading.
