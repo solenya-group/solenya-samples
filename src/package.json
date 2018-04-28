@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "dependencies": {
-    "pickle-ts": "0.4.0",
+    "pickle-ts": "0.5.1",
     "typestyle": "^1.7.2",
     "typescript": "^2.6.2",
     "@types/webpack-env": "1.13.0",
@@ -40,6 +40,8 @@
     "web-animations-js": "2.3.1",
     "@types/web-animations-js": "2.2.6",
     "es5-shim": "4.5.10",
-    "es6-shim": "0.35.3"
+    "es6-shim": "0.35.3",
+    "bowser": "^1.9.3",
+    "class-validator": "0.8.5"
   }
 }

@@ -15,6 +15,7 @@ import { Stopwatch } from './stopwatch'
 import { TabSample } from './tabSample'
 import { Relativity } from './relatvity'
 import { AutoCompleteSample } from './autoCompleteSample'
+import { ValidationSample } from './validation'
 
 import { slide } from '../util/animations'
 import createHistory from 'history/createBrowserHistory'
@@ -41,6 +42,7 @@ export class Samples extends Component
     @Type (() => TabSample) tabSample = new TabSample ()
     @Type (() => Relativity) relativity = new Relativity ()
     @Type (() => AutoCompleteSample) autoComplete = new AutoCompleteSample()
+    @Type (() => ValidationSample) validation = new ValidationSample()
 
     @Exclude() current = ""
     
@@ -70,7 +72,7 @@ export class Samples extends Component
                         ul (
                             this.childrenKeys().map (key =>
                                 li ({ class: 'nav-item'},
-                                    commandLink (() => this.changePage (key), { class: 'nav-link' },
+                                    commandLink (() => this.changePage (key), { class: 'm-1' },
                                         decamel(key)
                                     )
                                 )
@@ -92,7 +94,7 @@ export class Samples extends Component
     }    
 
     childrenKeys() {
-        return Object.keys (this).filter (k => this[k] instanceof Component && k != "slide")
+        return Object.keys (this).filter (k => this[k] instanceof Component)
     }
 }
 
