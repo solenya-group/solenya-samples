@@ -10,12 +10,12 @@ export class TimeTravel extends Component
         return div (
             div ("To time travel, in the console:"),
             div ({ class: codeClass },
-                div ("var t = window.app.timeTravelOn = true"),
+                div ("window.app.timeTravelOn = true"),
                 div ("var t = window.app.time"),
                 div ("t.prev()"),
                 div ("t.next()"),
                 div ("t.start()"),
-                div ("t.seek (state => state.counter.count == 0)")
+                div ("t.seek (state => state.timeTravel.count == 0)")
             ),
             myButton (() => this.add(1), "+"),
             this.count,

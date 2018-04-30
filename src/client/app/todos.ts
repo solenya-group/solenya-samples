@@ -2,37 +2,36 @@
 import { myInput, icon } from '../util/util'
 import { style } from 'typestyle'
 import { slideChildren } from '../util/animations'
+import { Type } from 'class-transformer'
 
 enum TaskType { active = "active", done = "done", all = "all" }
 
-type TaskItem = { name: string, done: boolean}
-
 export class Todos extends Component
-{    
-    list: TaskItem[] = []
+{
+    @Type(() => TaskItem) list: TaskItem[] = []
     currentTaskType = TaskType.all
     currentText?: string
 
-    addTask () {
-        this.update(() => {            
-            this.list = this.list.concat({name: this.currentText!, done: false})            
+    addTask() {
+        this.update(() => {
+            this.list = this.list.concat(new TaskItem(this.currentText))
             this.currentText = undefined
-        })  
-    }
-    
-    toggleTaskStatus (item: TaskItem) {
-        this.update(() => {
-            item.done = ! item.done
-        })        
-    }
-
-    removeTask (item: TaskItem) {
-        this.update(() => {
-            this.list = this.list.filter (i => i != item)
         })
     }
 
-    updateListFilter (type: TaskType) {
+    toggleTaskStatus(item: TaskItem) {
+        this.update(() => {
+            item.done = !item.done
+        })
+    }
+
+    removeTask(item: TaskItem) {
+        this.update(() => {
+            this.list = this.list.filter(i => i != item)
+        })
+    }
+
+    updateListFilter(type: TaskType) {
         this.update(() => {
             this.currentTaskType = type
         })
@@ -40,85 +39,113 @@ export class Todos extends Component
 
     clearCompleted() {
         this.update(() => {
-            this.list = this.list.filter (i => ! i.done)
+            this.list = this.list.filter(i => !i.done)
         })
     }
 
     filteredList() {
         return (
             this.currentTaskType == TaskType.all ? this.list :
-            this.currentTaskType == TaskType.done ? this.list.filter (i => i.done) :
-            this.list.filter (i => ! i.done)
+                this.currentTaskType == TaskType.done ? this.list.filter(i => i.done) :
+                    this.list.filter(i => !i.done)
+        )
+    }
+
+    view() {
+        return div(
+            this.linksView(),
+            this.inputView(),
+            this.listView()
         )
     }
 
     linksView() {
         return (
-            div (
-                [TaskType.all, TaskType.done, TaskType.active].map (t => 
-                    commandLink(() => this.updateListFilter (t),                    
-                        span({
-                                class: 'px-1',
-                                style: t != this.currentTaskType ? {} : { textDecoration : "underline" }
-                            },
-                            t
-                        )
-                    )),
-                commandLink(() => this.clearCompleted(), {class: "ml-4"}, "clear completed")
+            div({ class: "mr-2", style: { display: 'flex' } },
+                linkListView(
+                    [TaskType.all, TaskType.done, TaskType.active],
+                    this.currentTaskType,
+                    link => this.updateListFilter(link)
+                ),
+                commandLink(() => this.clearCompleted(), { class: "ml-4" }, "clear completed")
             )
         )
     }
 
     inputView() {
         return (
-            div ({ class: "input-group" }, 
-                myInput (
+            div({ class: "my-2" },
+                inputText(
                     () => this.currentText,
-                    e => this.updateProperty (e),
+                    e => this.updateProperty(e),
                     {
                         class: placeholderClass,
+                        style: { padding: '1rem' },
                         placeholder: "What needs to be done?",
                         onkeyup: (e: any) => {
-                            if (e.keyCode == 13 && ! this.list.find (l => l.name == this.currentText))
-                                this.addTask ()
+                            if (e.keyCode == 13 && this.currentText && !this.list.find(l => l.name == this.currentText))
+                                this.addTask()
                         }
                     }
-                 )
-            )
-        )
-    }
-
-    listView() {
-        return (
-            ul(slideChildren(),
-                this.filteredList().map (task =>
-                    li ({ key: task.name, class: hoverArea }, 
-                        commandLink(() => this.removeTask(task), { class: showOnHover }, icon ("close")),
-                        input ({
-                            type: "checkbox",
-                            checked: task.done ? "checked" : undefined,
-                            onclick: () => this.toggleTaskStatus (task)
-                        }),
-                        span ({class: "pl-1"},
-                            ! task.done ? task.name : span ({ style: {textDecoration: 'line-through', color: "lightgray"}}, task.name)
-                        )
-                    )
                 )
             )
         )
     }
 
-    view () {
-        return div (
-            this.linksView(),
-            this.inputView(),
-            this.listView(),
-            div ("To autosave the todo list to local storage, go to the console and type: window.app.storage.autosave = true")
+    listView() {
+        return ul(slideChildren(),
+            this.filteredList().map(task => task.view(() => this.removeTask(task)))
         )
     }
 }
 
-const placeholderClass = style ({
+export class TaskItem extends Component {
+    name = ""
+    done = false
+
+    constructor(name?: string) {
+        super()
+        if (name)
+            this.name = name
+    }
+
+    toggleStatus() {
+        this.update(() => this.done = !this.done)
+    }
+
+    view(remove?: () => void) {
+        return (
+            li({ key: this.name, class: hoverArea },
+                commandLink(remove!, { class: showOnHover }, icon ("close")),
+                input({
+                    type: "checkbox",
+                    checked: this.done ? "checked" : undefined,
+                    onclick: () => this.toggleStatus()
+                }),
+                span(
+                    !this.done ?
+                        this.name :
+                        span({ style: { textDecoration: 'line-through', color: "lightgray" } },
+                            this.name
+                        )
+                )
+            )
+        )
+    }
+}
+
+export function linkListView<T>(links: T[], currentLink: T, updateLink: (link: T) => void) {
+    return links.map(link =>
+        commandLink(() => updateLink(link), {
+            class: "mx-2",
+            style: link == currentLink ? "text-decoration:underline" : ""
+        },
+            link
+        )
+    )
+}
+
+const placeholderClass = style({
     $nest: {
         "&::placeholder": {
             color: "lightgray"
@@ -126,17 +153,17 @@ const placeholderClass = style ({
     }
 })
 
-export const showOnHover = style ({})
+export const showOnHover = style({})
 
-export const hoverArea = style (<any>{    
+export const hoverArea = style(<any>{
     $nest: {
-        ['.'+showOnHover]: {
+        ['.' + showOnHover]: {
             color: "transparent"
         },
         "&:hover": {
-          ['.'+showOnHover] : {
-             color: "blue"
-          }
-        } 
-      }  
+            ['.' + showOnHover]: {
+                color: "blue"
+            }
+        }
+    }
 })

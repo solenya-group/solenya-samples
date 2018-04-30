@@ -2,6 +2,7 @@ import { Component, HValue, div, inputText, KeyValue, isNullOrEmpty, commandButt
 import { debounce } from 'lodash-decorators'
 import { Exclude } from 'class-transformer'
 import { icon } from '../util/util'
+import * as $ from "jquery"
 
 export class AutoComplete extends Component
 {    

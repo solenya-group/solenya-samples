@@ -34,7 +34,7 @@ export class AnimateElement extends Component
 
 const sprite = (isEven: boolean) => style ({
     padding: '75px',
-    backgroundImage: `url('/dist//pickle.png')`,
+    backgroundImage: `url('/client/images/pickle.png')`,
     backgroundSize: 'cover',
     position: 'absolute',
     backgroundColor: isEven ? "red" : "purple"

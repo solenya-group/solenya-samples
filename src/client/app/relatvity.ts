@@ -102,7 +102,7 @@ const spriteSize = 75
 
 const sprite = (name: string) => style({
   padding: `${spriteSize}px`, 
-  background: `url('/dist/${name}.png')`,
+  background: `url('/client/images/${name}.png')`,
   backgroundSize: 'cover',
   position: 'absolute'
 })

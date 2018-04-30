@@ -68,7 +68,7 @@ export class Samples extends Component
                 div ({ class: layoutHeader }),
                 main ({ class: layoutContent + ' d-flex'},
                     div ({ class: 'p-3', style: { width: '250px', zIndex: 1000, backgroundColor: 'white' } },
-                        div ({ class: 'mb-3', style: { backgroundImage: `url('/dist//pickle.png')`, backgroundSize: 'cover', width: '100px', height: '100px' } } ),
+                        div ({ class: 'mb-3', style: { backgroundImage: `url('/client/images/pickle.png')`, backgroundSize: 'cover', width: '100px', height: '100px' } } ),
                         ul (
                             this.childrenKeys().map (key =>
                                 li ({ class: 'nav-item'},
