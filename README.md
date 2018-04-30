@@ -4,8 +4,6 @@
 * Live Editable Code Samples: https://stackblitz.com/@pickle-ts
 * Github Samples: https://github.com/pickle-ts/pickle-samples
 
-The individual samples are in the /src/client/app folder:
-
 * Counter
   * Demonstrates basic update
 * BMI Calculator
@@ -56,4 +54,4 @@ The sample uses:
 * web-animations-api w/ web-animations-js shim for animations
 * class-validator
 
-The /src/boot/start.ts file demonstrates app setup, serializing to local storage & hot module reloading.
+The /src/client/app.ts file demonstrates app startup & hot module reloading.
