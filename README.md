@@ -4,6 +4,8 @@
 * Live Editable Code Samples: https://stackblitz.com/@pickle-ts
 * Github Samples: https://github.com/pickle-ts/pickle-samples
 
+The individual samples are in the /src/client/app folder:
+
 * Counter
   * Demonstrates basic update
 * BMI Calculator
