@@ -1,41 +1,49 @@
-import { Component, key, div, small, HValue, VElement, label, KeyValue } from 'pickle-ts'
-import { validateSync, ValidationError } from 'class-validator'
-import { myInput } from './util'
-import { Exclude } from 'class-transformer'
+import { ValidationError } from 'class-validator'
+import { style } from 'typestyle'
+import { Component, HValue, VElement, div, key, form, label, KeyValue, IValidated } from 'pickle-ts'
 
-export abstract class MyForm extends Component implements IValidateComponent
+export function firstContraintViolation (error?: ValidationError)
 {
-    @Exclude() validationErrors: ValidationError[] = []
-    @Exclude() validated = false
-    
-    updated() {
-        if (this.validated)
-            this.validationErrors = validateSync (this)
-    }
-}
-
-export interface IValidateComponent
-{
-    validationErrors: ValidationError[]
-    validated: boolean    
-}
-
-export function validateMessage (component: IValidateComponent, prop: () => any)
-{
-    if (! component.validated)
-        return
-
-    var errors = component.validationErrors
-    var error = errors.find (e => e.property == key(prop))
-
     if (! error)
         return undefined
 
     var constraintKey = Object.keys(error.constraints)[0]
-    var errorMessage = error.constraints[constraintKey]
-
-    return div ({ style: {color: 'red'} }, errorMessage)
+    return error.constraints[constraintKey]
 }
+
+export const validationMessage = (errorMessage?: string) => 
+    ! errorMessage ? undefined :
+    div ({ class: customInvalidFeedbackClass}, errorMessage)
+
+export const propertyValidation = (vform: Component & IValidated, prop: () => any) =>
+    validationMessage (firstContraintViolation (vform.validator.validationError (prop)))
+
+export const validationCss = (vform: IValidated, errorMessage?: string) =>
+     'form-control' + (
+        errorMessage ? ' is-invalid' :
+        vform.validator.wasValidated ? ' is-valid' :
+        '')
+
+export function validationForm (vform: IValidated, ...values: any[]) {
+    return (
+        div (
+            form ( { novalidate: "novalidate"},
+                ...values
+            )
+        )
+    )
+}
+
+export const feedbackMessageObj = {
+    width: '100%',
+    marginTop: '.25rem',
+    fontSize: '80%'
+}
+
+export const customInvalidFeedbackClass = style({
+    $debugName: 'customInvalidFeedback',
+    color: 'red'
+}, feedbackMessageObj)
 
 export type InputFn = (
     propertyAccess: () => any,
@@ -43,11 +51,11 @@ export type InputFn = (
     ...values: HValue[]
 ) => VElement
 
-export function superInput (inputFn: InputFn, component: Component & IValidateComponent, prop: () => any, labelStr: string, ...values: HValue[])
+export function superInput (inputFn: InputFn, component: IValidated & Component, prop: () => any, labelStr: string, ...values: HValue[])
 {
     return div ({class: 'form-group'},
          label ({for: key (prop)}, labelStr),
          inputFn (prop, e => component.updateProperty (e), { id: key (prop)}, ...values),          
-         small (validateMessage (component, prop))
+         propertyValidation (component, prop)
     )
 }

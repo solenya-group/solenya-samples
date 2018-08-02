@@ -2,7 +2,7 @@ import { Component, div, ul, li } from 'pickle-ts'
 import { myButton } from '../util/util'
 import { Exclude } from 'class-transformer'
 import { slideChildren } from '../util/animations'
-import { range, shuffle } from 'lodash'
+import { range, shuffle } from 'lodash-es'
 
 export class AnimateList extends Component {
     @Exclude() items = shuffle (range(1, 101))
@@ -10,7 +10,8 @@ export class AnimateList extends Component {
     view() {
         return div(
             myButton(() => this.sort(), "shuffle"),
-            div(slideChildren(), this.items.map(n => div ({ key: n, style: { display: "inline-block", width: "40px" } }, n)))
+            div(slideChildren(), this.items.map(n =>
+                div ({ key: n, style: { display: "inline-block", width: "40px" } }, n)))
         )
     }
 
