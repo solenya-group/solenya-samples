@@ -7,7 +7,7 @@ export class ModalSample extends Component
 {
     result = ""
     workingResult = ""
-    @Type (() => Modal) modal = new Modal()
+    modal = new Modal()
 
     view() {
         return (

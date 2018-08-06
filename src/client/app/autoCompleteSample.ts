@@ -4,7 +4,7 @@ import { AutoComplete } from '../util/autoComplete'
 
 export class AutoCompleteSample extends Component
 {
-    @Type (() => AutoComplete) languages = new AutoComplete()
+    languages = new AutoComplete()
     
     attached() {
         this.languages.isMultiSelect = true

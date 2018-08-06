@@ -6,7 +6,7 @@ import { myInput } from '../util/util'
 export class TableSample extends Component
 {
     filter = ""
-    @Type (() => Table) table = new Table()
+    table = new Table()
 
     constructor() {
         super()

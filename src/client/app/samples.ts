@@ -24,22 +24,22 @@ export class Samples extends Component implements IRouted
     @Exclude() router:Router = new Router (this)
     @Exclude() routeName = ""
 
-    @Type (() => Counter) counter = new Counter ()
-    @Type (() => BMI) bmi = new BMI ()    
-    @Type (() => GitSearch) gitSearch = new GitSearch ()
-    @Type (() => Todos) todos = new Todos ()
-    @Type (() => TableSample) tableSample = new TableSample ()
-    @Type (() => TimeTravel) timeTravel = new TimeTravel ()
-    @Type (() => Composition) composition = new Composition ()
-    @Type (() => Tree) tree = new Tree ()
-    @Type (() => ModalSample) modalSample = new ModalSample()
-    @Type (() => AnimateElement) animateElement = new AnimateElement ()
-    @Type (() => AnimateList) animateList = new AnimateList ()
-    @Type (() => Stopwatch) stopwatch = new Stopwatch ()
-    @Type (() => TabSample) tabSample = new TabSample ()
-    @Type (() => Relativity) relativity = new Relativity ()
-    @Type (() => AutoCompleteSample) autoComplete = new AutoCompleteSample()
-    @Type (() => ValidationSample) validationSample = new ValidationSample ()
+    counter = new Counter ()
+    bmi = new BMI ()    
+    gitSearch = new GitSearch ()
+    todos = new Todos ()
+    tableSample = new TableSample ()
+    timeTravel = new TimeTravel ()
+    composition = new Composition ()
+    tree = new Tree ()
+    modalSample = new ModalSample()
+    animateElement = new AnimateElement ()
+    animateList = new AnimateList ()
+    stopwatch = new Stopwatch ()
+    tabSample = new TabSample ()
+    relativity = new Relativity ()
+    autoComplete = new AutoCompleteSample()
+    validationSample = new ValidationSample ()
         
     attached()
     {
@@ -69,7 +69,7 @@ export class Samples extends Component implements IRouted
                 div ({ class: layoutHeader }),
                 main ({ class: layoutContent + ' d-flex'},
                     div ({ class: 'p-3', style: { width: '250px', zIndex: 1000, backgroundColor: 'white' } },
-                        div ({ class: 'mb-3', style: { backgroundImage: `url('/dist//pickle.png')`, backgroundSize: 'cover', width: '100px', height: '100px' } } ),
+                        div ({ class: 'mb-3', style: { backgroundImage: `url('/client/images/pickle.png')`, backgroundSize: 'cover', width: '100px', height: '100px' } } ),
                         ul (
                             this.childrenKeys().map (key =>
                                 li ({ class: 'nav-item'},
