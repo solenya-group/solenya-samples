@@ -1,45 +1,33 @@
-import { Component, div } from 'pickle-ts'
-import { Type } from 'class-transformer'
+import { Component, Let } from 'pickle-ts'
 import { AutoComplete } from '../util/autoComplete'
 
 export class AutoCompleteSample extends Component
 {
-    languages = new AutoComplete()
-    
-    attached() {
-        this.languages.isMultiSelect = true
-        this.languages.suggestor = async searchText => languages // for remote/large lists would filter by searchText
+    countries: string[] = []
+
+    get languagesAutoComplete() : AutoComplete {    
+        return AutoComplete.transient (this, () => this.countries, {
+            isMultiSelect: true,
+            modelToLabel: countryCodeToLabel,
+            labelToModel: countryLabelToCode,
+            suggestor: async searchText => {
+                const reg = new RegExp (searchText, "i")
+                return countries.filter (l => reg.test (l.label)).map(l => l.label)
+            }
+        })                    
     }
 
     view() {
-        return this.languages.view ({class: "form-control"})
+        return this.languagesAutoComplete.view()
     }
 }
 
-const languages = [
-    "JavaScript",
-    "SQL",
-    "C#",
-    "Java",
-    "PHP",
-    "Python",
-    "TypeScript",
-    "C++",
-    "Ruby",
-    "C",
-    "VB.NET",
-    "Objective-C",
-    "Swift",
-    "Go",
-    "CoffeeScript",
-    "Groovy",
-    "Scala",
-    "Perl",
-    "VBA",
-    "R",
-    "Visual Basic 6",
-    "Assembly",
-    "Lua",
-    "Matlab",
-    "Elixir"
+const countryCodeToLabel = (code: string) => Let (countries.find (c => c.code == code), c => c ? c.label : "")
+const countryLabelToCode = (label: string) => Let (countries.find (c => c.label == label), c => c ? c.code : "")
+
+const countries = [
+    {code: "UK", label: "United Kingdom"},
+    {code: "USA", label: "United States of America"},
+    {code: "NZ", label: "New Zealand"},
+    {code: "AUS", label: "Australia"}    
 ]

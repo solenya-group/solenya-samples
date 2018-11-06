@@ -1,38 +1,55 @@
-import { Component, div, ul, li, commandLink, VElement } from 'pickle-ts'
-import { Cursor } from './cursor'
-import { slide, slideChildren } from '../util/animations'
+import { Exclude } from 'class-transformer'
+import { Component, div, IRouted, li, Router, ul } from 'pickle-ts'
+import { slide } from '../util/animations'
 
-export abstract class TabGroup extends Cursor
+export abstract class TabGroup extends Component implements IRouted
 {
-    view() {
+    @Exclude() router: Router = new Router (this)
+    @Exclude() routeName!: string    
+    @Exclude() slideForward = false
+
+    attached() {
+        for (var k of this.childrenKeys()) {
+            this[k].router = new Router (this[k])
+            this[k].routeName = k
+        }
+    }
+
+    childRoute (name: string) {
+        return this[name]
+    }
+
+    async beforeNavigate (childPath: string) {
+        const kids = this.childrenKeys()
+        if (childPath == '') {
+            this.router.navigate (this.router.currentChildComponent ? this.router.currentChildName : kids[0])
+            return false
+        }
+
+        this.slideForward = kids.indexOf (childPath) > kids.indexOf (this.router.currentChildName)
+        return true
+    }
+
+    view() {        
+        var current = this.router.currentChildComponent!
+
         return (
             div (
-                ul ({ class:'nav nav-tabs'}, this.childKeys().map (k =>
-                    li ({class: 'nav-item nav-link' + (this.currentName() == k ? ' active' : '') },
-                        commandLink (() => this.updateIndex(this.index (k)), k)
+                ul ({ class:'nav nav-tabs'}, this.childrenKeys().map (k =>
+                    li ({class: 'nav-item nav-link' + (current.routeName == k ? ' active' : '') },
+                        this.router.navigateLink(k, k)
                     )
                 )),
                 div ({ class: 'tab-content' },
-                    this.childKeys().map (k =>
-                        div ({ class: 'tab-pane' + (this.currentName() == k ? ' show active' : '') },
-                            div (slide (true, this.prevIndex < this.activeIndex), div ( {key:this.currentName()}, this.childView (k)))
+                    this.childrenKeys().map (k =>
+                        div ({ class: 'tab-pane' + (current.routeName == k ? ' show active' : '') },
+                            div (slide (true, this.slideForward),
+                                div ( {key: current.routeName}, current.view())
+                            )
                         )
                     )
                 )
             )
         )
-    }
-
-    abstract childView (name: string) : VElement
-}
-
-export class ComponentTabGroup extends TabGroup
-{  
-    childView (name: string) {
-        return this[name].view()
-    }
-
-    childKeys() {        
-        return Object.keys (this).filter (k => this[k] instanceof Component && k != "parent")
     }
 }

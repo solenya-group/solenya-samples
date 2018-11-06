@@ -1,4 +1,5 @@
 ﻿import { VLifecycle } from 'pickle-ts'
+
 const bowser:any = require ("bowser")
 
 type SlideState = {
@@ -49,11 +50,13 @@ export function slide (horizontal = true, forwards = true, duration = 700, adjus
             
             if (adjustScroll)
                 window.scrollTo (0,0)
-            
-            var anim = el["animate"]([{transform: getTranslate(-slideAmount, horizontal)}, { transform: 'none' }], { duration, easing: 'ease-out' })                         
-            a["animate"]([{ opacity: 1 }, { opacity:0 }], { duration, easing: 'ease-out' }) 
-            b["animate"]([{ opacity: 0 }, { opacity:1 }], { duration, easing: 'ease-out' }) 
-            
+                        
+            var anim = el.animate ([{transform: getTranslate(-slideAmount, horizontal)}, { transform: 'none' }], { duration, easing: 'ease-out' }) 
+            var ea = a as Element
+            var eb = b as Element
+            ea.animate ([{ opacity: 1 }, { opacity: 0 }], { duration, easing: 'ease-out' }) 
+            eb.animate ([{ opacity: 0 }, { opacity: 1 }], { duration, easing: 'ease-out' }) 
+        
             anim.onfinish = (() => el.removeChild (a) )
         }
     }

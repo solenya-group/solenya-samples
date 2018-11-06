@@ -92,11 +92,7 @@ export class Samples extends Component implements IRouted
                 div ({ class: layoutFooter })
             )
         )
-    }    
-
-    childrenKeys() {
-        return Object.keys (this).filter (k => this[k] instanceof Component)
-    }
+    }   
 }
 
 function decamel (str: string) {

@@ -24,7 +24,7 @@ module.exports = {
         ]
     },
     devServer: {
-        historyApiFallback: true
+        historyApiFallback: true,
     },
     devtool: 'inline-source-map',
     plugins: [

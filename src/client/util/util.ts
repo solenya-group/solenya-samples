@@ -1,6 +1,7 @@
-﻿import { i, commandButton, inputText, KeyValue, HValue, inputValue } from 'pickle-ts'
+﻿import { i, commandButton, inputText, KeyValue, HValue, inputValue, Component } from 'pickle-ts'
+import { Exclude } from "class-transformer"
 
-export function icon (name: string, ...properties: HValue[]) {
+export function icon (...properties: HValue[]) {
     return i({class: "material-icons"}, ...properties, name)
 }
 
@@ -30,4 +31,14 @@ export function currencyInputStringToNumber (s: string, prevValue: number) : num
     
 export function numberToCurrencyInputString (n: number, prevInputString: string) {
     return Number.isNaN (n) ? "" : "$" + n.toLocaleString()
+}
+
+export function transient <T extends Component> (parent: Component, field: string, create: () => T) : T {
+    if (parent[field])
+        return parent[field]
+
+    var child = parent[field] = create()
+    Exclude()(parent, field)
+    child.attach (parent.app!, parent)    
+    return child
 }
