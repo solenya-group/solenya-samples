@@ -1,7 +1,7 @@
 import { Exclude } from 'class-transformer'
 import * as $ from "jquery"
 import { debounce } from 'lodash-decorators'
-import { Component, HProps, HValue, KeyValue, commandButton, commandLink, div, inputText, isNullOrEmpty, span, key } from 'pickle-ts'
+import { Component, HProps, HValue, KeyValue, commandButton, commandLink, div, inputText, isNullOrEmpty, span, key, Let } from 'pickle-ts'
 import { icon, transient } from '../util/util'
 import { style } from 'typestyle'
 
@@ -386,3 +386,11 @@ export const css = {
         fontSize: "90%"
     })
 }
+
+export const mapPropertyFromTo = <T> (
+    array: T[],
+    from: (value: T) => string,
+    to: (value: T) => string
+    ) =>
+    (value: string) =>
+        Let (array.find (c => from(c) == value), c => c ? to(c) : "")

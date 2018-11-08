@@ -2,6 +2,7 @@
 import { Component, div, h1, key, li, main, ul, IRouted, Router } from 'pickle-ts'
 import { slide } from '../util/animations'
 import { layout, layoutContent, layoutFooter, layoutHeader } from '../util/styles'
+import { decamel } from '../util/util'
 import { AnimateElement } from './animateElement'
 import { AnimateList } from './animateList'
 import { AutoCompleteSample } from './autoCompleteSample'
@@ -72,7 +73,7 @@ export class Samples extends Component implements IRouted
                         div ({ class: 'mb-3', style: { backgroundImage: `url('/client/images/pickle.png')`, backgroundSize: 'cover', width: '100px', height: '100px' } } ),
                         ul (
                             this.childrenKeys().map (key =>
-                                li ({ class: 'nav-item'},
+                                li ({ class: 'nav-item ' + (key == this.router.currentChildName ? "font-weight-bold": "") },
                                     this.router.navigateLink (key, { class: 'nav-link p-1' },
                                         decamel(key)
                                     )
@@ -94,9 +95,3 @@ export class Samples extends Component implements IRouted
         )
     }   
 }
-
-function decamel (str: string) {
-    return str
-        .replace(/([A-Z])/g, ' $1')
-        .replace(/^./, str => str.toUpperCase() )
-}   

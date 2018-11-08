@@ -1,4 +1,4 @@
-﻿import { i, commandButton, inputText, KeyValue, HValue, inputValue, Component } from 'pickle-ts'
+﻿import { i, commandButton, inputText, KeyValue, HValue, inputValue, Component, Let } from 'pickle-ts'
 import { Exclude } from "class-transformer"
 
 export function icon (...properties: HValue[]) {
@@ -41,4 +41,18 @@ export function transient <T extends Component> (parent: Component, field: strin
     Exclude()(parent, field)
     child.attach (parent.app!, parent)    
     return child
+}
+
+export const mapPropertyFromTo = <T> (
+    array: T[],
+    from: (value: T) => string,
+    to: (value: T) => string
+    ) =>
+    (value: string) =>
+        Let (array.find (c => from(c) == value), c => c ? to(c) : "")
+       
+export function decamel (str: string) {
+    return str
+        .replace(/([A-Z])/g, ' $1')
+        .replace(/^./g, str => str.toUpperCase() )
 }

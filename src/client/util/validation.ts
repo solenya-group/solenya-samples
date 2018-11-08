@@ -59,3 +59,11 @@ export function superInput (inputFn: InputFn, component: IValidated & Component,
          propertyValidation (component, prop)
     )
 }
+
+export function Label (s: string) {
+    return Reflect.metadata("label", s);
+}
+
+export function getLabel (target: any, propertyKey: string) {
+    return Reflect.getMetadata("label", target, propertyKey) as string|undefined
+}

@@ -1,5 +1,5 @@
 import { Component, Let } from 'pickle-ts'
-import { AutoComplete } from '../util/autoComplete'
+import { AutoComplete, mapPropertyFromTo } from '../util/autoComplete'
 
 export class AutoCompleteSample extends Component
 {
@@ -8,8 +8,8 @@ export class AutoCompleteSample extends Component
     get languagesAutoComplete() : AutoComplete {    
         return AutoComplete.transient (this, () => this.countries, {
             isMultiSelect: true,
-            modelToLabel: countryCodeToLabel,
-            labelToModel: countryLabelToCode,
+            modelToLabel: mapPropertyFromTo (countries, x => x.code, x => x.label),
+            labelToModel: mapPropertyFromTo (countries, x => x.label, x => x.code),
             suggestor: async searchText => {
                 const reg = new RegExp (searchText, "i")
                 return countries.filter (l => reg.test (l.label)).map(l => l.label)
@@ -21,9 +21,6 @@ export class AutoCompleteSample extends Component
         return this.languagesAutoComplete.view()
     }
 }
-
-const countryCodeToLabel = (code: string) => Let (countries.find (c => c.code == code), c => c ? c.label : "")
-const countryLabelToCode = (label: string) => Let (countries.find (c => c.label == label), c => c ? c.code : "")
 
 const countries = [
     {code: "UK", label: "United Kingdom"},
