@@ -67,29 +67,7 @@ export class AutoComplete extends Component implements AutoCompleteProps
         this._fromModel = () =>
             mapSingleOrMultiple (this.isMultiSelect, parent[key(prop)], x => props.modelToLabel ? props.modelToLabel (x) : x)        
     }
-                       
-    static transient (parent: Component, prop: () => any, props: AutoCompleteProps = {})
-    {            
-        return AutoComplete.transientCustom (AutoComplete, parent, prop, props)
-    }
-
-    static transientCustom<T extends AutoComplete> (
-        constructor: new (parent: Component, prop: () => any, props: AutoCompleteProps) => T,
-        parent: Component,
-        prop: () => any,                
-        props: AutoCompleteProps = {},
-        afterConstruct?: (obj: T) => void
-    )
-    {            
-        return transient (parent, "_" + key (prop) + "AutoComplete", () =>
-            {
-                const c = new constructor (parent, prop, props)
-                if (afterConstruct)
-                    afterConstruct (c)
-                return c
-            }
-        )
-    }
+                           
     private handleClickOutside() {
         $(document).click (e => {
             let ac = document.getElementById (this.id)
@@ -277,6 +255,7 @@ export class AutoComplete extends Component implements AutoCompleteProps
             this.suggestions = []
             this.isSuggestion = false
             this.attemptedAutoComplete = false
+            this.focusSearchTextBox()
         })
     }
 

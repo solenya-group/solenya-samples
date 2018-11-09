@@ -1,10 +1,8 @@
-import { Component, KeyValue, inputText, div, isNullOrEmpty, thead, table, th, td, tr, tbody, key, br } from 'pickle-ts'
-import { Type, deserializeArray, plainToClass, Exclude } from 'class-transformer'
-import { Table, FieldOption, Column } from '../util/table'
-import { myInput } from '../util/util'
-import { Label } from '../util/validation'
-import { style } from 'typestyle';
+import { Exclude, plainToClass, Type } from 'class-transformer'
 import { uniqBy } from 'lodash-es'
+import { br, Component, div } from 'pickle-ts'
+import { style } from 'typestyle'
+import { Table } from '../util/table'
 
 export class TableSample extends Component
 {
@@ -12,7 +10,7 @@ export class TableSample extends Component
 
     view() {
         var o = new President()
-        return ( 
+        return (
             div (
                 this.table.searchInput (),
                 br(),
