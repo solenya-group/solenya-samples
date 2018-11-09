@@ -1,10 +1,10 @@
 import { deserialize, Exclude } from 'class-transformer'
-import { orderBy } from 'lodash'
+import { orderBy } from 'lodash-es'
 import { debounce } from 'lodash-decorators'
 import { commandLink, Component, div, equalsIgnoreCase, HValue, inputText, isNullOrEmpty, key, KeyValue, table, tbody, td, th, thead, tr, VElement } from "pickle-ts"
 import { MenuItem, menuView } from './bsmenu'
 import { objUrl, safeFetch } from './network'
-import { decamel } from './util';
+import { decamel } from './util'
 import { getLabel } from './validation'
 
 export interface Column<T> {
@@ -90,10 +90,8 @@ export abstract class Table<T> extends Component implements ITableQuery
         return true
     }
 
-    loadFromArray (array: T[], filter: (row: T) => boolean)
+    loadFromArray (rows: T[], filter: (row: T) => boolean)
     {
-        let rows = array
-
         if (this.search && this.search != "")        
             rows = rows.filter (filter)
      
@@ -101,9 +99,9 @@ export abstract class Table<T> extends Component implements ITableQuery
         if (sortValues.length)
             rows = orderBy (rows, sortValues[0].key, sortValues[0].ascending ? undefined : "desc")        
         
-        this.update (() => {
-            this.total = array.length
+        this.update (() => {            
             this.results = rows.slice (this.from, this.from + this.pageSize) 
+            this.total = rows.length
         })
     }
 
@@ -158,8 +156,11 @@ export abstract class Table<T> extends Component implements ITableQuery
     view (props?: TableViewProps<T>) {   
         return (
             div (
-                ! this.results || ! props ? undefined : this.content (props),
-                this.pager()
+                ! this.results || ! props ? undefined : 
+                div (
+                    this.content (props),
+                    this.pager()
+                )
             )
         )
     }
