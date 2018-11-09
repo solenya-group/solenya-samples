@@ -47,12 +47,10 @@ The sample uses:
 * Webpack hot reloading
 * typestyle
 * scss
-* CSS Framework: Bootstrap 4
+* CSS Framework: Bootstrap 4.1
 * Icons: material icons ( https://material.io/icons/ )
 * Debouncing, sorting: lodash
 * history
-* ASP.NET Core 2.0 w/ Microsoft.SpaServices
-  * Samples easily adaptable to node.js
 * web-animations-api w/ web-animations-js shim for animations
 * class-validator
 
