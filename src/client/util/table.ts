@@ -84,8 +84,6 @@ export abstract class Table<T> extends Component implements ITableQuery
             this.from = newTable.from
             this.pageSize = newTable.pageSize
             this.total = newTable.total        
-            this.search = newTable.search
-            this.sort = newTable.sort        
         })
         return true
     }
