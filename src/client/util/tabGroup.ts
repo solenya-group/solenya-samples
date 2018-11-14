@@ -15,10 +15,6 @@ export abstract class TabGroup extends Component implements IRouted
         }
     }
 
-    childRoute (name: string) {
-        return this[name]
-    }
-
     async beforeNavigate (childPath: string) {
         const kids = this.childrenKeys()
         if (childPath == '') {

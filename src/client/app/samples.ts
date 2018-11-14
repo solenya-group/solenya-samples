@@ -58,10 +58,6 @@ export class Samples extends Component implements IRouted
         this.router.followHistory()
     }
 
-    childRoute (name: string) {        
-        return this[name]
-    }
-
     view () {        
         document.title = `Pickle - ${decamel (this.router.currentChildName)} sample`
 
