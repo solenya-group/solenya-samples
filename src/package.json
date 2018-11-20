@@ -5,7 +5,7 @@
     "start": "webpack-dev-server --mode development --hot"
   },
   "dependencies": {
-    "pickle-ts": "0.9.6",
+    "pickle-ts": "0.9.7",
     "class-validator": "0.9.1",
     "history": "4.7.2",
     "bowser": "1.9.3",

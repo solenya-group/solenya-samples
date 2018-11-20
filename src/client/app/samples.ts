@@ -54,8 +54,7 @@ export class Samples extends Component implements IRouted
             c.router = new Router (c)
             c.routeName = k
         }            
-        this.router.navigate (location.pathname != "/" ? location.pathname : key (() => this.relativity))
-        this.router.followHistory()
+        this.router.navigate (location.pathname != "/" ? location.pathname : key (() => this.relativity))        
     }
 
     view () {        
