@@ -1,11 +1,9 @@
-import { deserialize, Exclude } from 'class-transformer'
-import { orderBy } from 'lodash-es'
+import { Exclude } from 'class-transformer'
 import { debounce } from 'lodash-decorators'
-import { commandLink, Component, div, equalsIgnoreCase, HValue, inputText, isNullOrEmpty, key, KeyValue, table, tbody, td, th, thead, tr, VElement } from "pickle-ts"
+import { orderBy } from 'lodash-es'
+import { commandLink, Component, div, equalsIgnoreCase, HValue, inputText, isNullOrEmpty, key, table, tbody, td, th, thead, tr, VElement, getFriendlyName } from "pickle-ts"
 import { MenuItem, menuView } from './bsmenu'
-import { objUrl, safeFetch } from './network'
-import { decamel } from './util'
-import { getLabel } from './validation'
+import { queryToObject, objUrl } from './network';
 
 export interface Column<T> {
     property: (() => any) | string,
@@ -47,10 +45,10 @@ export abstract class Table<T> extends Component implements ITableQuery
     abstract results?: T[]
 
     from = 0
-    pageSize = 10    
-    search = ""
+    pageSize = 10        
     sort = ""
     total = NaN
+    @Exclude() _search = ""
 
     constructor (pageSize?: number) {
         super()
@@ -59,6 +57,15 @@ export abstract class Table<T> extends Component implements ITableQuery
     }
 
     abstract reload() : Promise<void>   
+
+    get search() {return this._search}
+
+    set search (value: string) {
+        if (value || "" != this._search || "") {
+            this._search = value
+            this.doSearch()
+        }
+    }
 
     @Exclude()
     get hasMoreResults() {
@@ -71,21 +78,17 @@ export abstract class Table<T> extends Component implements ITableQuery
 
     async loadFromUrl (tableUrl: string)
     {
-        const url = objUrl (tableUrl, this.getQuery())
-        const response = await safeFetch (url)
-
-        if (! response.ok)
-            return false
-
-        const newTable = <this> deserialize (<any>(this.constructor), await response.text())        
+        const newTable = <this> await queryToObject (<any>this.constructor, objUrl (tableUrl, this.getQuery()))        
         
-        this.update (() => {
-            this.results = newTable.results        
-            this.from = newTable.from
-            this.pageSize = newTable.pageSize
-            this.total = newTable.total        
-        })
-        return true
+        if (newTable)
+            this.update (() => {
+                this.results = newTable.results        
+                this.from = newTable.from
+                this.pageSize = newTable.pageSize
+                this.total = newTable.total        
+            })
+
+        return newTable != null
     }
 
     loadFromArray (rows: T[], filter: (row: T) => boolean)
@@ -98,25 +101,25 @@ export abstract class Table<T> extends Component implements ITableQuery
             rows = orderBy (rows, sortValues[0].key, sortValues[0].ascending ? undefined : "desc")        
         
         this.update (() => {            
-            this.results = rows.slice (this.from, this.from + this.pageSize) 
+            this.results = rows.slice (this.from, this.from + this.pageSize)             
             this.total = rows.length
         })
     }
 
-    private canPrev() {
+    protected canPrev() {
         return this.from > 0
     }
 
-    private canNext() {
+    protected canNext() {
         return this.hasMoreResults
     }
 
-    private prev() {
+    protected prev() {
         this.from = Math.max (0, this.from - this.pageSize)
         this.reload()
     }
 
-    private next() {
+    protected next() {
         this.from = this.from + this.pageSize
         this.reload()
     }
@@ -142,15 +145,6 @@ export abstract class Table<T> extends Component implements ITableQuery
         this.reload()
     }
     
-    private updateSearchText (payload: KeyValue) {
-        this.updateProperty (payload)
-        this.doSearch()
-    }
-
-    private updateSearchItem (text: string) {   
-        this.updateSearchText ({key: key (() => this.search), value: text })
-    }   
-
     view (props?: TableViewProps<T>) {   
         return (
             div (
@@ -186,13 +180,13 @@ export abstract class Table<T> extends Component implements ITableQuery
         )
     }    
 
-    private pager() {
+    protected pager() {
         return (
             div ({class: 'row', style: {margin: '1rem -0.5rem'}},
                 [                
-                    ! this.canPrev() ? null : commandLink (() => this.prev(), "Previous"),
+                    ! this.canPrev() ? null : commandLink ({ onclick: () => this.prev() }, "Previous"),
                     ! this.results!.length ? "No results." : `${this.from + 1} to ${this.from + this.results!.length} of ${this.total}`,
-                    ! this.canNext() ? null : commandLink (() => this.next(), "Next")                    
+                    ! this.canNext() ? null : commandLink ({ onclick: () => this.next() }, "Next")                    
                 ]
                 .filter (x => x != null)
                 .map (x => div ({class: 'mx-2 d-flex align-items-center'}, x))
@@ -203,7 +197,7 @@ export abstract class Table<T> extends Component implements ITableQuery
     columnHeader (col: Column<T>, guideObject?: T)
     {
         const property = typeof(col.property) == "string" ? col.property : key (col.property)        
-        const lbl = col.label || getLabel (guideObject, property) || decamel (property)
+        const lbl = col.label || getFriendlyName (guideObject, col.property)
 
         if (! col.canSort && ! col.options)
             return lbl
@@ -220,7 +214,9 @@ export abstract class Table<T> extends Component implements ITableQuery
                     ...col.options.map (o => <MenuItem>
                     {
                         label: o.label + (equalsIgnoreCase (search, o.value) ? " ✓" : ""),
-                        action: () => this.updateSearchItem (o.value)
+                        action: () => {
+                            this.search = o.value
+                        }
                     })
                 ]
             ),
@@ -228,13 +224,13 @@ export abstract class Table<T> extends Component implements ITableQuery
                 isNullOrEmpty (search) ? [] :
                 [
                     { label: ""},
-                    <MenuItem> { label: "Clear Filter", action: () => this.updateSearchItem ("")}
+                    <MenuItem> { label: "Clear Filter", action: () => { this.search = ""} }
                 ]
             )
         )        
     }
 
-    private sortMenu(col: Column<T>) {
+    protected sortMenu(col: Column<T>) {
         const property = typeof(col.property) == "string" ? col.property : key (col.property)    
         return ! col.canSort ? [] :
         [
@@ -243,7 +239,7 @@ export abstract class Table<T> extends Component implements ITableQuery
         ]
     }
 
-    private tick (property: string, ascending: boolean) {
+    protected tick (property: string, ascending: boolean) {
         if (! this.sortValues().length)
             return ""
         const sort = this.sortValues()[0]
@@ -253,14 +249,14 @@ export abstract class Table<T> extends Component implements ITableQuery
     searchInput() {
         return (            
             div ({ class: "d-flex align-items-center" },
-                inputText (() => this.search, e => this.updateSearchText (e),
+                inputText (this, () => this.search, {},
                 {
                     placeholder: "Search",
                     class: 'form-control',
                     style: { width: "300px"}
                 }),
                 isNullOrEmpty (this.search) ? undefined :
-                    commandLink (() => this.updateSearchItem (""), {class: "ml-2"}, "Clear")
+                    commandLink ({ onclick: () => { this.search = "" }, class: "ml-2"}, "Clear")
             )
         )
     }

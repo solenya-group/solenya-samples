@@ -24,7 +24,7 @@ export const menuView = (lbl: string, selected: boolean, ...items: MenuItem[]) =
         div ({ class: 'dropdown-menu'},
             items.map (i => 
                 ! i.action ? div ({class: "dropdown-divider"}) :
-                commandLink (i.action, {class: "dropdown-item"}, i.label)
+                commandLink ({ onclick: i.action, class: "dropdown-item"}, i.label)
             )
         )
     )

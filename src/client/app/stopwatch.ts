@@ -14,7 +14,7 @@ export class Stopwatch extends Component
 
     view () {
         return div (
-            myButton (() => this.toggle(), this.on ? "stop": "start"),
+            myButton ({ onclick: () => this.toggle() }, this.on ? "stop": "start"),
             div ({ class: 'display-2' }, this.count/10)
         )
     }

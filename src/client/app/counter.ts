@@ -7,9 +7,9 @@ export class Counter extends Component
 
     view () {        
         return div (
-            myButton (() => this.add(-1), "-"),
+            myButton ({ onclick: () => this.add(-1) }, "-"),
             this.count,
-            myButton (() => this.add(+1), "+") 
+            myButton ({ onclick: () => this.add(+1) }, "+") 
         )
     }
     

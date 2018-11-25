@@ -1,8 +1,7 @@
 ﻿import { Exclude, Type } from 'class-transformer'
-import { Component, div, h1, key, li, main, ul, IRouted, Router } from 'pickle-ts'
+import { Component, div, h1, key, li, main, ul, IRouted, Router, humanizeIdentifier } from 'pickle-ts'
 import { slide } from '../util/animations'
 import { layout, layoutContent, layoutFooter, layoutHeader } from '../util/styles'
-import { decamel } from '../util/util'
 import { AnimateElement } from './animateElement'
 import { AnimateList } from './animateList'
 import { AutoCompleteSample } from './autoCompleteSample'
@@ -58,7 +57,7 @@ export class Samples extends Component implements IRouted
     }
 
     view () {        
-        document.title = `Pickle - ${decamel (this.router.currentChildName)} sample`
+        document.title = `Pickle - ${humanizeIdentifier (this.router.currentChildName)} sample`
 
         return (
             div ({ class: layout },
@@ -70,7 +69,7 @@ export class Samples extends Component implements IRouted
                             this.childrenKeys().map (key =>
                                 li ({ class: 'nav-item ' + (key == this.router.currentChildName ? "font-weight-bold": "") },
                                     this.router.navigateLink (key, { class: 'nav-link p-1' },
-                                        decamel(key)
+                                        humanizeIdentifier(key)
                                     )
                                 )
                             )
@@ -79,7 +78,7 @@ export class Samples extends Component implements IRouted
                     div (slide (),
                         div ({ key: this.router.currentChildName },
                             div ({ class: 'col'},
-                                h1 ({ class: 'py-3' }, decamel (this.router.currentChildName)),
+                                h1 ({ class: 'py-3' }, humanizeIdentifier (this.router.currentChildName)),
                                 this.router.currentChildComponent!.view()
                             )
                         )

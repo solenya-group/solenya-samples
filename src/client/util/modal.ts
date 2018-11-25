@@ -1,5 +1,5 @@
-﻿import { Component, VElement, commandButton, h2, div } from 'pickle-ts'
-import * as $ from "jquery"
+﻿import { Component, VElement, h2, div, button } from 'pickle-ts'
+import $ from 'jquery'
 
 export enum ModalAction
 {
@@ -20,7 +20,7 @@ export class Modal extends Component
 {
     private _isOpen = false
     private entryFocusId = ""
-
+ 
     get isOpen() {return this._isOpen }
     
     set isOpen (value: boolean) {
@@ -70,7 +70,7 @@ export class Modal extends Component
         return (
             div ({class: "modal fade"},
             {
-                onAttached: (element: Element) => this.onAttached (),
+                onAttached: el => this.onAttached (),
                 role: "dialog"
             }, 
                 div ({class:"modal-dialog", role : "document" },
@@ -85,9 +85,9 @@ export class Modal extends Component
                         ),
                         div ({ class: "modal-footer"},
                             ! properties.okText ? undefined :
-                                commandButton (() => onClose (ModalAction.OK), properties.okText),
+                                button ({ onclick: () => onClose (ModalAction.OK) }, properties.okText),
                             ! properties.cancelText ? undefined :
-                                commandButton (() => onClose (ModalAction.Cancel), properties.cancelText)
+                                button ({ onclick: () => onClose (ModalAction.Cancel)}, properties.cancelText)
                         )
                     )
                 )
@@ -106,14 +106,14 @@ function trapModalFocus (element: string)
 {
     $(document).focusin (x => { // if gestures used instead of tab key, do our best to not focus outside modal
         var focused = document.activeElement;
-        if ($(element).find($(focused)).length == 0) {
+        if ($(element).find (focused).length == 0) {
             var lastFocusableEl = $(element).find(focusableEls).last()[0]
             if (lastFocusableEl && lastFocusableEl.focus)
                 lastFocusableEl.focus()
         }
     })
 
-    $(element).on('keydown', function(e) {
+    $(element).on('keydown', e => {
         if (e.key !== 'Tab' && e.keyCode !== 9) // tab
             return
         

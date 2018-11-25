@@ -1,6 +1,5 @@
 import { Component, div } from 'pickle-ts'
 import { Counter } from './counter'
-import { Type } from 'class-transformer'
 
 export class Composition extends Component
 {    

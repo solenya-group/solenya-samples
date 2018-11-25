@@ -17,7 +17,7 @@ export class TimeTravel extends Component
                 div ("t.start()"),
                 div ("t.seek (state => state.timeTravel.count == 0)")
             ),
-            myButton (() => this.add(1), "+"),
+            myButton ({ onclick: () => this.add(1) }, "+"),
             this.count,
             div ("To save state to local storage on updates:"),
             div ({ class: codeClass }, 'window.app.storage.autosave = true'),

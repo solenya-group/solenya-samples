@@ -1,16 +1,29 @@
-import { Component, slider, div, ul, li, a, key, inputText, KeyValue, isNullOrEmpty } from 'pickle-ts'
-import { debounce } from 'lodash-decorators'
 import { Exclude } from 'class-transformer'
-import { myInput } from '../util/util'
+import { debounce } from 'lodash-decorators'
+import { a, Component, isNullOrEmpty, li, ul, VElement } from 'pickle-ts'
+import { box, myInputText } from '../util/util'
 
 export class GitSearch extends Component
 {
-    searchText?: string = undefined
+    _searchText = ""
+
+    get searchText () {return this._searchText}
+
+    set searchText (value: string) {
+        this.update (() => {
+            this._searchText = value
+            if (isNullOrEmpty (value))
+                this.results = []
+            else
+                this.search (value)    
+        })
+    }
+
     results: any[] = []
 
-    view () {       
-        return div (
-            myInput (() => this.searchText, e => this.searchTextChange (e)),
+    view () : VElement {       
+        return box (
+            myInputText (this, () => this.searchText, {}),
             ul (this.results.map (
                 result =>
                     li (
@@ -21,19 +34,15 @@ export class GitSearch extends Component
         )
     }
 
-    searchTextChange (payload: KeyValue) {
-        this.updateProperty (payload)
-        if (! isNullOrEmpty (payload.value))
-            this.search (payload.value!)
-    }   
-
     @Exclude()
     @debounce (500)    
     async search (search: string) {
         var result = await fetch ("https://api.github.com/search/repositories?q=" + encodeURI (search))
         if (result.ok) {
             var body = await result.json()
-            this.update (() => this.results = body.items)
-        }
+            this.update (() => {
+                this.results = body.items
+            })
+        }        
     }
 }

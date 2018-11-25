@@ -1,16 +1,22 @@
 import { Exclude } from 'class-transformer'
 import { IsNotEmpty, IsNumber, Max, MaxLength, Min, MinLength } from 'class-validator'
-import { Component, Num, VElement, div, Validator, IValidated } from 'pickle-ts'
-import { inputCurrency, myButton, myInput } from '../util/util'
+import { checkbox, Component, div, Label, radioGroup, selector, Validator, VElement } from 'pickle-ts'
+import { inputCurrency, myButton, myInputNumber, myInputText } from '../util/util'
 import { superInput } from '../util/validation'
 
-export class ValidationSample extends Component implements IValidated
+enum Color {
+    Red = "red",
+    Green = "green",
+    Blue = "blue"
+}
+
+export class ValidationSample extends Component
 {        
     @Exclude() validator:Validator = new Validator (this)
 
-    @MinLength(3) @MaxLength(10) @IsNotEmpty()   username = ""
-    @Num() @Min(0) @Max(10)                      rating = NaN
-    @Num() @IsNumber()                           bonus = NaN
+    @MinLength(3) @MaxLength(10) @IsNotEmpty()   username?: string
+    @Min(0) @Max(10)                             rating?: number
+    @IsNumber()                                  bonus?: number
 
     ok() {
         this.validator.validateThenUpdate()
@@ -22,13 +28,19 @@ export class ValidationSample extends Component implements IValidated
     }
 
     view () : VElement {           
-        return div (  
-            superInput (myInput, this, () => this.username, "Username"),
-            superInput (myInput, this, () => this.rating, "Rating"),
-            superInput (inputCurrency, this, () => this.bonus, "Bonus"),
+        return div (
+            superInput (this, myInputText, () => this.username, {}, "Username"),
+            superInput (this, myInputNumber, () => this.rating, {}, "Rating"),
+            superInput (this, inputCurrency, () => this.bonus, {}, "Bonus"),
             div (
-                myButton(() => this.ok(), "ok")
+                myButton ({onclick: () => this.ok() }, "ok")
             )
         )       
     }
+}
+
+const myRadioProps = { 
+    optionAttrs: { class: "custom-control custom-radio" },
+    inputAttrs: { class: "custom-control-input" },
+    labelAttrs: { class: "custom-control-label" }
 }

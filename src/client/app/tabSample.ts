@@ -1,5 +1,4 @@
-﻿import { Component, div, commandButton, VElement, IRouted, Router } from 'pickle-ts'
-import { Type } from 'class-transformer'
+﻿import { Component, div } from 'pickle-ts'
 import { TabGroup } from '../util/tabGroup'
 
 export class TabSample extends TabGroup

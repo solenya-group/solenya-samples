@@ -1,5 +1,4 @@
-﻿import { Component, div, commandButton, VElement } from 'pickle-ts'
-import { Counter } from './Counter'
+﻿import { Component, div, VElement } from 'pickle-ts'
 import { Type } from 'class-transformer'
 import { myButton } from '../util/util'
 
@@ -10,8 +9,8 @@ export class Tree extends Component
     view () : VElement {
         return div ({ style: { paddingLeft: "" + this.branch().length / 2 + "rem" } },
             "Component",
-            myButton (() => this.inc(), "+"),
-            this.trees.length == 0 ? undefined : myButton (() => this.dec(), "-"),
+            myButton ({ onclick: () => this.inc() }, "+"),
+            this.trees.length == 0 ? undefined : myButton ({ onclick: () => this.dec() }, "-"),
             this.trees.map (c => c.view ())
         )
     }

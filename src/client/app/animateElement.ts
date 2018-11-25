@@ -1,7 +1,7 @@
-import { Component, div, radioGroup } from 'pickle-ts'
-import { myButton } from '../util/util'
-import { slide, slideChildren } from '../util/animations'
 import { style } from 'typestyle/lib'
+import { Component, div, radioGroup, VElement } from 'pickle-ts'
+import { slide } from '../util/animations'
+import { myButton } from '../util/util'
 
 enum Direction { Horizontal = "Horizontal", Vertical = "Vertical" }
 
@@ -11,11 +11,14 @@ export class AnimateElement extends Component
     forwards = true
     option = Direction.Horizontal
 
-    view () {           
+    view () : VElement {           
         return div (
-            radioGroup (() => this.option, [Direction.Vertical, Direction.Horizontal].map (d => [d, d]), e => this.updateProperty (e)),
-            myButton (() => this.add(-1), "prev"),
-            myButton (() => this.add(+1), "next"),
+            radioGroup (this, () => this.option,
+                [Direction.Vertical, Direction.Horizontal]
+                    .map (d => ({label: ""+d, value: d}))
+            ),
+            myButton ({ onclick: () => this.add(-1) }, "prev"),
+            myButton ({ onclick: () => this.add(+1) }, "next"),
             div (slide (this.option == "Horizontal", this.forwards),
                 div (
                     { key: this.count, class: sprite (this.count % 2 == 0) },

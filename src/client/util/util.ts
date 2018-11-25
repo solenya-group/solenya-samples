@@ -1,58 +1,71 @@
-﻿import { i, commandButton, inputText, KeyValue, HValue, inputValue, Component, Let } from 'pickle-ts'
-import { Exclude } from "class-transformer"
+﻿import { i, inputText, HValue, inputValue, div, label, span, Component, button, PropertyRef, InputProps, inputNumber } from 'pickle-ts'
 
-export function icon (...properties: HValue[]) {
-    return i({class: "material-icons"}, ...properties, name)
+export function icon (...values: HValue[]) {
+    return i({class: "material-icons"}, ...values, name)
 }
 
-export function myButton (onclick: () => void, ...values: HValue[]) {
-    return commandButton(onclick, {class: "m-2 btn btn-outline-primary"}, ...values)
+export function myButton (...values: HValue[]) {
+    return button ({class: "m-2 btn btn-outline-primary"}, ...values)
 }
 
-export function myInput (prop: () => any, inputAction: (propertyChange: KeyValue) => any, ...values: HValue[]) {
-    return inputText(prop, inputAction, {class: "form-control"}, ...values)
+export function myInputText (component: Component, prop: PropertyRef<string|undefined>, inputProps: InputProps, ...values: HValue[]) {
+    return inputText (component, prop, inputProps, {class: "form-control"}, ...values)
 }
 
-export function inputCurrency (propertyAccess: () => any, inputAction: (propertyChange: KeyValue) => any, ...values: any[])
+export function myInputNumber (component: Component, prop: PropertyRef<number|undefined>, inputProps: InputProps, ...values: HValue[]) {
+    return inputNumber (component, prop, inputProps, {class: "form-control"}, ...values)
+}
+
+export const box = (...values: HValue[]) =>
+    div ({style: { maxWidth: "500px" } }, ...values)
+
+export function inputCurrency (component: Component, prop: PropertyRef<number|undefined>, inputProps: InputProps, ...values: any[])
 {
-    return inputValue<number> (
-        propertyAccess,
-        inputAction,
-        currencyInputStringToNumber,
-        numberToCurrencyInputString,
+    return inputValue<number|undefined> (
+        component,
+        prop,
+        {
+            inputStringToModel: currencyInputStringToNumber,
+            modelToInputString: numberToCurrencyInputString
+        },
         {class: "form-control"},
         ...values
     )
 }
 
-export function currencyInputStringToNumber (s: string, prevValue: number) : number {
+export function currencyInputStringToNumber (s: string, prevValue: number|undefined) : number {
     return parseFloat (s.replace(/\D/g,''))
 }
     
-export function numberToCurrencyInputString (n: number, prevInputString: string) {
-    return Number.isNaN (n) ? "" : "$" + n.toLocaleString()
+export function numberToCurrencyInputString (n: number|undefined, prevInputString: string) {
+    return n == null || isNaN (n) ? "" : "$" + n.toLocaleString()
 }
 
-export function transient <T extends Component> (parent: Component, field: string, create: () => T) : T {
-    if (parent[field])
-        return parent[field]
-
-    var child = parent[field] = create()
-    Exclude()(parent, field)
-    child.attach (parent.app!, parent)    
-    return child
+export function urlQuery (url: string, obj: object) {
+    const params = Object.keys (obj).map (k => k + "=" + encodeURIComponent (obj[k]))
+    return url + "?" + params.join ("&")
 }
 
-export const mapPropertyFromTo = <T> (
-    array: T[],
-    from: (value: T) => string,
-    to: (value: T) => string
-    ) =>
-    (value: string) =>
-        Let (array.find (c => from(c) == value), c => c ? to(c) : "")
-       
-export function decamel (str: string) {
-    return str
-        .replace(/([A-Z])/g, ' $1')
-        .replace(/^./g, str => str.toUpperCase() )
+export const labeledValue = (name: string, value: any) =>
+  div (label (name, ": ", span (value)))
+
+//https://stackoverflow.com/questions/43382569/generic-memoize-function-returning-the-same-function-type
+export function memoize<R, T extends (...args: any[]) => R>(f: T): T {
+    const memory = new Map<string, R>()
+    const g = (...args: any[]) => {
+        if (!memory.get(args.join()))
+            memory.set(args.join(), f(...args))
+        return memory.get(args.join())
+    }
+    return g as T
+}
+
+type CloseButtonProps = {
+    adjustY: number
+}
+  
+export function closeButton (props: CloseButtonProps, ...values: HValue[]) {
+    return button ({
+        class: 'close d-inline-flex', type: 'button' }, span ({class: 'ml-1',style: { fontSize: "17px",transform:`translateY(${props.adjustY || 0}px)`}}, "×") 
+    )
 }

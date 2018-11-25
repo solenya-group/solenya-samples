@@ -1,9 +1,9 @@
-import { Exclude } from 'class-transformer'
+import { Exclude } from "class-transformer"
 import * as $ from "jquery"
 import { debounce } from 'lodash-decorators'
-import { Component, HProps, HValue, KeyValue, commandButton, commandLink, div, inputText, isNullOrEmpty, span, key, Let } from 'pickle-ts'
-import { icon, transient } from '../util/util'
 import { style } from 'typestyle'
+import { button, commandLink, Component, div, HProps, inputText, isNullOrEmpty, key, Let, span, VElement } from 'pickle-ts'
+import { icon } from './util'
 
 interface IAutoCompleteProps
 {
@@ -19,11 +19,19 @@ interface IAutoCompleteProps
     looseMatch: boolean
     suggestor?: (searchText: string) => Promise<string[]>
     labelToModel?: (label: string) => string
-    modelToLabel?: (val: string) => string
+    modelToLabel?: (model: string) => string
     onSelectEvent?: (selection: string | string[]) => void    
 }
 
 export type AutoCompleteProps = Partial<IAutoCompleteProps>
+
+const KeyCode = {
+    Enter: 13,
+    Escape: 27,
+    Delete: 8,    
+    Up: 38,
+    Down: 40
+}
 
 @Exclude()
 export class AutoComplete extends Component implements AutoCompleteProps
@@ -38,13 +46,13 @@ export class AutoComplete extends Component implements AutoCompleteProps
     readonly preload = false
     looseMatch = false
     readonly suggestor?: (searchText: string) => Promise<string[]>        
-    readonly _toModel?: (selection: string | string[]) => void
-    readonly _fromModel?: () => string | string[]   
+    private readonly toModel?: (selection: string | string[]) => void
+    private readonly fromModel?: () => string | string[]   
 
     onSelectEvent?: (selection: string | string[]) => void    
 
     selections: string[] = []    
-    searchText?: string = undefined
+    _searchText?: string 
     suggestions: string[] = []
 
     isSuggestion = false
@@ -61,13 +69,13 @@ export class AutoComplete extends Component implements AutoCompleteProps
             .filter(k => props[k] !== undefined)
             .forEach(k => this[k] = props[k])
         
-        this._toModel = async selection => parent[key(prop)] =
+        this.toModel = async selection => parent[key(prop)] =
             mapSingleOrMultiple (this.isMultiSelect, selection, x => props.labelToModel ? props.labelToModel (x) : x)
         
-        this._fromModel = () =>
-            mapSingleOrMultiple (this.isMultiSelect, parent[key(prop)], x => props.modelToLabel ? props.modelToLabel (x) : x)        
+        this.fromModel = () =>
+            mapSingleOrMultiple (this.isMultiSelect, parent[key(prop)], x => props.modelToLabel ? props.modelToLabel (x) : x)                                  
     }
-                           
+
     private handleClickOutside() {
         $(document).click (e => {
             let ac = document.getElementById (this.id)
@@ -86,8 +94,8 @@ export class AutoComplete extends Component implements AutoCompleteProps
 
         if (this.suggestor && this.preload)
             await this.suggestor("")                           
-        if (this._fromModel)
-            this.setSelection (this._fromModel())
+        if (this.fromModel)
+            this.setSelection (this.fromModel())
     }
     
     /**
@@ -106,21 +114,22 @@ export class AutoComplete extends Component implements AutoCompleteProps
         )
     }
 
-    private searchTextView () {
+    private searchTextView () : VElement {
         return (
             inputText (
+                this,
                 () => this.searchText,
-                e => this.searchTextChange (e),
+                {},
                 {
                     id : this.id,
                     autocomplete: "off",
                     class: css.input,
                     onfocus: () => { $("#"+this.id).parent().addClass ([css.focus, "focus"]) },
                     onblur: () => { $("#"+this.id).parent().removeClass ([css.focus, "focus"]) },
-                    onkeyup: (e: KeyboardEvent) => {
-                        if (e.keyCode === 27) // ESC
+                    onkeyup: e => {
+                        if (e.keyCode == KeyCode.Escape)
                             this.closeSuggestions()
-                        if (e.keyCode == 13) { // ENTER    
+                        if (e.keyCode == KeyCode.Enter) {
                             if (this.allowNonSuggestions && ! isNullOrEmpty (this.searchText) && ! this.suggestions.length)
                                 this.selectNonSuggestion()
                             else if (this.enterKeySelection)
@@ -128,13 +137,12 @@ export class AutoComplete extends Component implements AutoCompleteProps
                             else
                                 this.autocomplete()
                         }
-                        else if (e.keyCode == 40 && this.suggestions.length) { // DOWN
+                        else if (e.keyCode == KeyCode.Down && this.suggestions.length) {
                             $(".dropdown-item").first().focus()
                         }
                     },
-                    onkeydown: (e: KeyboardEvent) => {
-                        if (e.keyCode == 8 && isNullOrEmpty (this.searchText)) { // delete 
-                            console.log("delete")
+                    onkeydown: e => {
+                        if (e.keyCode == KeyCode.Delete && isNullOrEmpty (this.searchText)) {                            
                             if (this.selections.length)
                                 this.removeSelection (this.selections[this.selections.length-1])
                         }
@@ -147,28 +155,29 @@ export class AutoComplete extends Component implements AutoCompleteProps
     private selectNonSuggestion() {
         this.update (() => {            
             this.selections = this.selections.concat (this.searchText!)
-            this.searchText = ""
+            this._searchText = ""
             this.onSelect()
             this.focusSearchTextBox()
         })
     }
 
-    private searchTextChange(payload: KeyValue) {         
-        if (this.searchText == payload.value)
-            return
-        this.update(() => {            
-            const match = this.suggestions.filter (s => s.toLowerCase() == (this.searchText || "").toLowerCase())
-            this.isSuggestion = match.length > 0
-            this.updateProperty (payload)
-            if (isNullOrEmpty (payload.value))
-                this.attemptedAutoComplete = false
-            if (this.isSuggestion) {
-                this.searchText = match[0]
+    get searchText() {
+        return this._searchText
+    }
+
+    set searchText (value: string|undefined) {    
+        if (this._searchText == value)
+            return        
+        
+        this.update (() => {
+            this._searchText = value
+            if (isNullOrEmpty (value))
+                this.attemptedAutoComplete = false            
+            if (this.isRealtime)
+                this.autocompleteAsync ()
+            else
                 this.onSelect()
-            }
         })
-        if (this.isRealtime)
-            this.autocompleteAsync ()    
     }
     
     @debounce (300)    
@@ -206,6 +215,12 @@ export class AutoComplete extends Component implements AutoCompleteProps
 
             this.suggestions = suggestions.slice (0, this.suggestionLimit)              
             this.attemptedAutoComplete = true
+
+            const match = this.suggestions.filter (s => s.toLowerCase() == (this.searchText || "").toLowerCase())
+            this.isSuggestion = match.length > 0                        
+            if (this.isSuggestion)
+                this._searchText = match[0]                                
+            this.onSelect()
         })
     }
 
@@ -215,9 +230,11 @@ export class AutoComplete extends Component implements AutoCompleteProps
                 this.selections.map (sel =>
                     span ({class: css.selection + " selection d-flex align-items-center "},
                         span ({style: {whiteSpace: "nowrap" }}, sel),
-                        commandButton(
-                            () => this.removeSelection (sel),
-                            { class: 'close d-inline-flex', type: 'button' }, icon ({ style: { fontSize: "16px", fontWeight: "bold" } }, "close")
+                        button({
+                            onclick: () => this.removeSelection (sel),
+                            class: 'close d-inline-flex', type: 'button'
+                        },
+                            icon ({ style: { fontSize: "16px", fontWeight: "bold" } }, "close")
                         )
                     )
                 )            
@@ -234,8 +251,8 @@ export class AutoComplete extends Component implements AutoCompleteProps
         if (this.onSelectEvent)
             this.onSelectEvent (selection)
 
-        if (this._toModel)
-            this._toModel (selection)
+        if (this.toModel)
+            this.toModel (selection)
     }
 
     private removeSelection (sel: string) {
@@ -261,15 +278,15 @@ export class AutoComplete extends Component implements AutoCompleteProps
 
     private suggestionKeyDown (e: KeyboardEvent)
     {        
-        if (e.keyCode == 27) // ESCAPE
+        if (e.keyCode == KeyCode.Escape) 
             this.closeSuggestions()
-        else if (e.keyCode == 13) // ENTER
+        else if (e.keyCode == KeyCode.Enter) 
             this.enterKeySelection = true                    
         else {
             this.transitioningFocus = true
-            if (e.keyCode == 38 && e.srcElement!.previousElementSibling)
+            if (e.keyCode == KeyCode.Up && e.srcElement!.previousElementSibling)
                 (e.srcElement!.previousElementSibling as any).focus()
-            else if (e.keyCode == 40 && e.srcElement!.nextElementSibling)
+            else if (e.keyCode == KeyCode.Down && e.srcElement!.nextElementSibling)
                 (e.srcElement!.nextElementSibling as any).focus()
         }
     }
@@ -285,12 +302,12 @@ export class AutoComplete extends Component implements AutoCompleteProps
                 this.suggestions.length == 0 ?
                     div ({ class: 'text-center'}, "No results found") :
                 this.suggestions.map ((s, index) =>
-                    commandLink (() => this.selectSuggestion (s),
-                        {
-                            tabindex: 0,
-                            onkeydown: (e: KeyboardEvent) => {this.suggestionKeyDown (e)},
-                            class: 'dropdown-item'
-                        }, s)
+                    commandLink ({
+                        onclick: () => this.selectSuggestion (s),                        
+                        tabindex: 0,                            
+                        onkeydown: e => {this.suggestionKeyDown (e)},
+                        class: 'dropdown-item'
+                    }, s)
                 )
             )
         )
@@ -298,7 +315,7 @@ export class AutoComplete extends Component implements AutoCompleteProps
 
     private selectSuggestion (suggestion: string) {  
         this.update(() => {
-            this.searchText = this.isMultiSelect ? "" : suggestion            
+            this._searchText = this.isMultiSelect ? "" : suggestion            
             this.selections = this.isMultiSelect ? this.selections.concat (suggestion) : []
             this.suggestions = []
             this.isSuggestion = true
@@ -326,6 +343,15 @@ export const mapSingleOrMultiple = <T,U> (isMulti: boolean, value: T | T[], mapp
         (<T[]>value).map (x => mapping (x)) :
         mapping (<T>value)
 
+export const mapPropertyFromTo = <T> (
+    array: T[],
+    from: (value: T) => string,
+    to: (value: T) => string
+) =>
+    (value: string) =>
+        Let (array.find (c => from(c) == value), c => c ? to(c) : "")
+
+
 export const css = {
     outer: style({           
         border: "1px solid #ced4da",
@@ -333,7 +359,8 @@ export const css = {
         padding: "0.2rem",
         backgroundColor: "white",
         height: "auto",
-        minHeight: "calc(2.25rem + 2px)"
+        minHeight: "calc(2.25rem + 2px)",
+        position: "relative"
     }),
     input: style({
         border: "none",
@@ -365,11 +392,3 @@ export const css = {
         fontSize: "90%"
     })
 }
-
-export const mapPropertyFromTo = <T> (
-    array: T[],
-    from: (value: T) => string,
-    to: (value: T) => string
-    ) =>
-    (value: string) =>
-        Let (array.find (c => from(c) == value), c => c ? to(c) : "")
