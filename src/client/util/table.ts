@@ -249,7 +249,7 @@ export abstract class Table<T> extends Component implements ITableQuery
     searchInput() {
         return (            
             div ({ class: "d-flex align-items-center" },
-                inputText ({component: this, prop: () => this.search, attrs: {                   
+                inputText ({ target: this, prop: () => this.search, attrs: {                   
                     placeholder: "Search",
                     class: 'form-control',
                     style: { width: "300px"}

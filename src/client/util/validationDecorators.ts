@@ -17,7 +17,7 @@ export const vMin = (min: number) => Min (min, {
 })
 
 export const vMax = (max: number) => Max (max, {
-    message: (args: ValidationArguments) => bestLabel (args) + ` must be at most ${max} characters`
+    message: (args: ValidationArguments) => bestLabel (args) + ` must be at most ${max}`
 })
 
 export const vLengthRange = (min: number, max:number) => 

@@ -14,7 +14,7 @@ export class AnimateElement extends Component
     view () : VElement {           
         return div (
             radioGroup ({
-                component: this,
+                target: this,
                 prop: () => this.option,
                 options: [Direction.Vertical, Direction.Horizontal]
                     .map (d => ({label: ""+d, value: d}))

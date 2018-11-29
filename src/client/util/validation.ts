@@ -1,6 +1,6 @@
 import { ValidationArguments, ValidationError } from 'class-validator'
 import { style } from 'typestyle'
-import { Component, div, form, HValue, IValidated, label, VElement, CoreInputAttrs, getFriendlyName, getPropertyKey, PropertyRef } from 'pickle-ts'
+import { Component, InputProps, div, form, IValidated, label, VElement, getFriendlyName, getPropertyKey, PropertyRef } from 'pickle-ts'
 
 export const bestLabel = (args: ValidationArguments) =>
     getFriendlyName (args.object, args.property)
@@ -50,16 +50,16 @@ export const customInvalidFeedbackClass = style({
 
 export const inputUnit = <T>
 (
-    component: IValidated & Component,
+    target: IValidated & Component,
     prop: PropertyRef<T>,           
-    createInput: (props: CoreInputAttrs<T>) => VElement
+    createInput: (props: InputProps<T>) => VElement
 ) =>
 {
     const id = getPropertyKey (prop)
 
     return div ({ class: 'form-group'},
-         label ({ for: id}, getFriendlyName (component, prop) ),
-         createInput ({component, prop, attrs: { id: id } }),
-         propertyValidation (component, prop)
+         label ({ for: id}, getFriendlyName (target, prop) ),
+         createInput ({target, prop, attrs: { id: id } }),
+         propertyValidation (target, prop)
     )
 }

@@ -23,7 +23,7 @@ class TaskItem extends Component {
             class: showOnHover             
         }),
         checkbox ({
-            component: this,
+            target: this,
             prop: () => this.done,
             prefix: this.name,    
             label: this.name,
@@ -98,7 +98,7 @@ export class Todos extends Component {
     return (
       div({ class: "input-group" },
         myInputText({
-          component: this,
+          target: this,
           prop: () => this.currentText,
           attrs: {
             class: placeholderClass,

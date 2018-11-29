@@ -1,4 +1,4 @@
-import { Component, div, HProps, inputRange, VElement, getFriendlyName, getPropertyValue, PropertyRef } from 'pickle-ts'
+import { Component, div, HAttributes, inputRange, VElement, getFriendlyName, getPropertyValue, PropertyRef } from 'pickle-ts'
 
 export class BMI extends Component
 {
@@ -19,11 +19,11 @@ export class BMI extends Component
         )
       }
     
-      inputRangeUnit<T> (prop: PropertyRef<number>, unit: string, attrs: HProps) {
+      inputRangeUnit<T> (prop: PropertyRef<number>, unit: string, attrs: HAttributes) {
         return div({ class: "col" },
            div (getFriendlyName (this, prop)),
-           inputRange ({ component: this, prop, attrs}),       
-           div (getPropertyValue ({component: this, prop}) + unit)
+           inputRange ({target: this, prop, attrs}),       
+           div (getPropertyValue (this, prop) + unit)
         )
       }
 }

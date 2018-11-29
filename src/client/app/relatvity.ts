@@ -36,7 +36,7 @@ export class Relativity extends Component {
         return (
             div({ style: { textAlign: "center" } },
                 p(`You can't go faster than the speed of light - but if Morty is moving relative to Pickle at 70% of the speed of light, and likewise Pickle is moving relative to Rick at 70% speed of light, then what is the relative velocity between Morty and Rick? Use the slider below to visualise what happens. Each row represents what each of the stationary characters sees from their perspective, i.e, from their inertial frame.`),
-                inputRange ({component: this, prop: () => this.speedPercent, attrs: {min: 0, max: 99, step: 1, style: { width: "500px" } } }),
+                inputRange ({target: this, prop: () => this.speedPercent, attrs: {min: 0, max: 99, step: 1, style: { width: "500px" } } }),
                 div(this.equationStr()),
                 div({ style: { width: '100%' } },
                     div({ style: { position: 'relative', display: 'inline-block' } },

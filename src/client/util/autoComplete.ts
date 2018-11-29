@@ -1,4 +1,4 @@
-import { commandLink, Component, div, HProps, inputText, isNullOrEmpty, key, span, VElement } from 'pickle-ts'
+import { commandLink, Component, div, HAttributes, inputText, isNullOrEmpty, key, span, VElement } from 'pickle-ts'
 import * as $ from "jquery"
 import { debounce } from 'lodash-decorators'
 import { style } from 'typestyle'
@@ -106,8 +106,8 @@ export class AutoComplete extends Component implements AutoCompleteProps
      *    ".dropdown-menu", ".dropdown-item", for suggestions (i.e. the bootstrap classes)
      * e.g. { style: { $nest: {".selection": { backgroundColor: "yellow" } } } }
      */
-    view (props?: HProps) {  
-        return div ({ class: "autocomplete " + css.outer + " d-flex align-items-center flex-wrap"}, props,
+    view (attrs?: HAttributes) {  
+        return div ({ class: "autocomplete " + css.outer + " d-flex align-items-center flex-wrap"}, attrs,
             this.selectionsView(),
             this.searchTextView (),
             this.suggestionsView ()
@@ -117,7 +117,7 @@ export class AutoComplete extends Component implements AutoCompleteProps
     private searchTextView () : VElement {
         return (
             inputText ({
-                component: this,
+                target: this,
                 prop: () => this.searchText,
                 attrs: {
                     id : this.id,
