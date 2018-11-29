@@ -2,4 +2,6 @@ node_modules/
 .vscode/
 client/*/*.js
 client/*/*.map
+client/*.js
+client/*.map
 package-lock.json

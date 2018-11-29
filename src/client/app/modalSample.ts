@@ -17,7 +17,7 @@ export class ModalSample extends Component
                 {
                     body: div (
                         p ("Modals can have input"),
-                        p (inputText (this, () => this.workingResult, {})),
+                        p (inputText ({component: this, prop: () => this.workingResult })),
                         p ("Also notice that the tab is trapped within the modal.")
                     ),
                     title: "modal test",

@@ -13,10 +13,12 @@ export class AnimateElement extends Component
 
     view () : VElement {           
         return div (
-            radioGroup (this, () => this.option,
-                [Direction.Vertical, Direction.Horizontal]
+            radioGroup ({
+                component: this,
+                prop: () => this.option,
+                options: [Direction.Vertical, Direction.Horizontal]
                     .map (d => ({label: ""+d, value: d}))
-            ),
+            }),
             myButton ({ onclick: () => this.add(-1) }, "prev"),
             myButton ({ onclick: () => this.add(+1) }, "next"),
             div (slide (this.option == "Horizontal", this.forwards),

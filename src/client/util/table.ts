@@ -1,9 +1,9 @@
 import { Exclude } from 'class-transformer'
 import { debounce } from 'lodash-decorators'
 import { orderBy } from 'lodash-es'
-import { commandLink, Component, div, equalsIgnoreCase, HValue, inputText, isNullOrEmpty, key, table, tbody, td, th, thead, tr, VElement, getFriendlyName } from "pickle-ts"
+import { commandLink, Component, div, equalsIgnoreCase, getFriendlyName, HValue, inputText, isNullOrEmpty, key, table, tbody, td, th, thead, tr, VElement } from "pickle-ts"
 import { MenuItem, menuView } from './bsmenu'
-import { queryToObject, objUrl } from './network';
+import { objUrl, queryToObject } from './network'
 
 export interface Column<T> {
     property: (() => any) | string,
@@ -249,12 +249,11 @@ export abstract class Table<T> extends Component implements ITableQuery
     searchInput() {
         return (            
             div ({ class: "d-flex align-items-center" },
-                inputText (this, () => this.search, {},
-                {
+                inputText ({component: this, prop: () => this.search, attrs: {                   
                     placeholder: "Search",
                     class: 'form-control',
                     style: { width: "300px"}
-                }),
+                }}),
                 isNullOrEmpty (this.search) ? undefined :
                     commandLink ({ onclick: () => { this.search = "" }, class: "ml-2"}, "Clear")
             )

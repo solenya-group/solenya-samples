@@ -1,45 +1,32 @@
-﻿import { i, inputText, HValue, inputValue, div, label, span, Component, button, PropertyRef, InputProps, inputNumber } from 'pickle-ts'
+﻿import { button, div, HValue, i, Let, inputText, inputValue, label, span, inputNumber, InputProps, combineObjAttrs } from 'pickle-ts'
 
-export function icon (...values: HValue[]) {
-    return i({class: "material-icons"}, ...values, name)
-}
+export const icon = (...values: HValue[]) =>
+    i({class: "material-icons"}, ...values, name)
 
-export function myButton (...values: HValue[]) {
-    return button ({class: "m-2 btn btn-outline-primary"}, ...values)
-}
+export const myButton = (...values: HValue[]) =>
+    button ({ class: "m-2 btn btn-outline-primary"}, ...values)
 
-export function myInputText (component: Component, prop: PropertyRef<string|undefined>, inputProps: InputProps, ...values: HValue[]) {
-    return inputText (component, prop, inputProps, {class: "form-control"}, ...values)
-}
+export const myInputText = (props: InputProps<string|undefined>) =>
+    inputText (combineObjAttrs (props, { attrs: { class: "form-control" } }))
 
-export function myInputNumber (component: Component, prop: PropertyRef<number|undefined>, inputProps: InputProps, ...values: HValue[]) {
-    return inputNumber (component, prop, inputProps, {class: "form-control"}, ...values)
-}
+export const myInputNumber = (props: InputProps<number|undefined>) =>
+    inputNumber (combineObjAttrs (props, {attrs: { class: "form-control"} }))
 
 export const box = (...values: HValue[]) =>
     div ({style: { maxWidth: "500px" } }, ...values)
 
-export function inputCurrency (component: Component, prop: PropertyRef<number|undefined>, inputProps: InputProps, ...values: any[])
-{
-    return inputValue<number|undefined> (
-        component,
-        prop,
-        {
-            inputStringToModel: currencyInputStringToNumber,
-            modelToInputString: numberToCurrencyInputString
-        },
-        {class: "form-control"},
-        ...values
-    )
-}
+export const inputCurrency = (props: InputProps<number|undefined>) =>
+    inputValue ({                
+        inputStringToModel: currencyInputStringToNumber,
+        modelToInputString: numberToCurrencyInputString,
+        ...combineObjAttrs (props, { attrs: { class: "form-control"} })
+    })    
 
-export function currencyInputStringToNumber (s: string, prevValue: number|undefined) : number {
-    return parseFloat (s.replace(/\D/g,''))
-}
+export const currencyInputStringToNumber = (s: string, prevValue: number|undefined) => 
+    parseFloat (s.replace(/\D/g,''))
     
-export function numberToCurrencyInputString (n: number|undefined, prevInputString: string) {
-    return n == null || isNaN (n) ? "" : "$" + n.toLocaleString()
-}
+export const numberToCurrencyInputString = (n: number|undefined, prevInputString: string) =>
+     n == null || isNaN (n) ? "" : "$" + n.toLocaleString()
 
 export function urlQuery (url: string, obj: object) {
     const params = Object.keys (obj).map (k => k + "=" + encodeURIComponent (obj[k]))
@@ -60,12 +47,18 @@ export function memoize<R, T extends (...args: any[]) => R>(f: T): T {
     return g as T
 }
 
-type CloseButtonProps = {
-    adjustY: number
-}
-  
-export function closeButton (props: CloseButtonProps, ...values: HValue[]) {
-    return button ({
-        class: 'close d-inline-flex', type: 'button' }, span ({class: 'ml-1',style: { fontSize: "17px",transform:`translateY(${props.adjustY || 0}px)`}}, "×") 
+export const closeButton = (...values: HValue[]) =>
+    button ({
+        class: 'close d-inline-flex', type: 'button' 
+    },
+        ...values,
+        icon ({ style: { fontSize: "16px", fontWeight: "bold" } }, "close")
     )
-}
+
+export const mapPropertyFromTo = <T> (
+    array: T[],
+    from: (value: T) => string,
+    to: (value: T) => string
+) =>
+    (value: string) =>
+        Let (array.find (c => from(c) == value), c => c ? to(c) : "")

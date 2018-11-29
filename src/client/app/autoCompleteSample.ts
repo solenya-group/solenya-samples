@@ -1,6 +1,7 @@
 import { Component, p } from 'pickle-ts'
-import { AutoComplete, mapPropertyFromTo } from '../util/autoComplete'
+import { AutoComplete } from '../util/autoComplete'
 import { Exclude } from 'class-transformer'
+import { mapPropertyFromTo } from '../util/util'
 
 export class AutoCompleteSample extends Component
 {

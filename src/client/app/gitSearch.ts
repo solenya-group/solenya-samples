@@ -23,7 +23,7 @@ export class GitSearch extends Component
 
     view () : VElement {       
         return box (
-            myInputText (this, () => this.searchText, {}),
+            myInputText ({component: this, prop: () => this.searchText }),
             ul (this.results.map (
                 result =>
                     li (

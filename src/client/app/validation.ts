@@ -1,8 +1,8 @@
 import { Exclude } from 'class-transformer'
-import { IsNotEmpty, IsNumber, Max, MaxLength, Min, MinLength } from 'class-validator'
-import { checkbox, Component, div, Label, radioGroup, selector, Validator, VElement } from 'pickle-ts'
-import { inputCurrency, myButton, myInputNumber, myInputText } from '../util/util'
-import { superInput } from '../util/validation'
+import { Component, div, Label, Validator, VElement, radioGroup, selector } from 'pickle-ts'
+import { box, inputCurrency, myButton, myInputNumber, myInputText } from '../util/util'
+import { inputUnit } from '../util/validation'
+import { vIsNotEmpty, vIsNumber, vLengthRange, vMax, vMin } from '../util/validationDecorators'
 
 enum Color {
     Red = "red",
@@ -14,9 +14,10 @@ export class ValidationSample extends Component
 {        
     @Exclude() validator:Validator = new Validator (this)
 
-    @MinLength(3) @MaxLength(10) @IsNotEmpty()   username?: string
-    @Min(0) @Max(10)                             rating?: number
-    @IsNumber()                                  bonus?: number
+    @Label ("Your User Name") @vLengthRange (3, 10) @vIsNotEmpty()       username?: string
+    @vMin(0) @vMax(10)                                                   rating?: number
+    @vIsNumber()                                                         bonus?: number
+    @vIsNotEmpty()                                                       color?: Color
 
     ok() {
         this.validator.validateThenUpdate()
@@ -28,19 +29,21 @@ export class ValidationSample extends Component
     }
 
     view () : VElement {           
-        return div (
-            superInput (this, myInputText, () => this.username, {}, "Username"),
-            superInput (this, myInputNumber, () => this.rating, {}, "Rating"),
-            superInput (this, inputCurrency, () => this.bonus, {}, "Bonus"),
+        return box (
+            inputUnit (this, () => this.username, props => myInputText (props)),            
+            inputUnit (this, () => this.rating, props => myInputNumber (props)),
+            inputUnit (this, () => this.bonus, props => inputCurrency (props)),
+            inputUnit (this, () => this.color, props =>
+                selector ({
+                    ...props,
+                    hasEmpty: true,
+                    attrs: { class: "form-control"},
+                    options: [Color.Red, Color.Green, Color.Blue].map (c => ({ label: c, value: c})),                    
+                })                            
+            ),
             div (
-                myButton ({onclick: () => this.ok() }, "ok")
+                myButton ({ onclick: () => this.ok() }, "ok")
             )
         )       
     }
-}
-
-const myRadioProps = { 
-    optionAttrs: { class: "custom-control custom-radio" },
-    inputAttrs: { class: "custom-control-input" },
-    labelAttrs: { class: "custom-control-label" }
 }

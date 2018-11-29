@@ -1,9 +1,9 @@
-import { Exclude } from "class-transformer"
+import { commandLink, Component, div, HProps, inputText, isNullOrEmpty, key, span, VElement } from 'pickle-ts'
 import * as $ from "jquery"
 import { debounce } from 'lodash-decorators'
 import { style } from 'typestyle'
-import { button, commandLink, Component, div, HProps, inputText, isNullOrEmpty, key, Let, span, VElement } from 'pickle-ts'
-import { icon } from './util'
+import { Exclude } from "class-transformer"
+import { closeButton } from './util'
 
 interface IAutoCompleteProps
 {
@@ -73,8 +73,8 @@ export class AutoComplete extends Component implements AutoCompleteProps
             mapSingleOrMultiple (this.isMultiSelect, selection, x => props.labelToModel ? props.labelToModel (x) : x)
         
         this.fromModel = () =>
-            mapSingleOrMultiple (this.isMultiSelect, parent[key(prop)], x => props.modelToLabel ? props.modelToLabel (x) : x)                                  
-    }
+            mapSingleOrMultiple (this.isMultiSelect, parent[key(prop)], x => props.modelToLabel ? props.modelToLabel (x) : x)        
+    }                      
 
     private handleClickOutside() {
         $(document).click (e => {
@@ -116,11 +116,10 @@ export class AutoComplete extends Component implements AutoCompleteProps
 
     private searchTextView () : VElement {
         return (
-            inputText (
-                this,
-                () => this.searchText,
-                {},
-                {
+            inputText ({
+                component: this,
+                prop: () => this.searchText,
+                attrs: {
                     id : this.id,
                     autocomplete: "off",
                     class: css.input,
@@ -148,7 +147,7 @@ export class AutoComplete extends Component implements AutoCompleteProps
                         }
                     }  
                 }
-            )
+            })
         )
     }
 
@@ -168,9 +167,10 @@ export class AutoComplete extends Component implements AutoCompleteProps
     set searchText (value: string|undefined) {    
         if (this._searchText == value)
             return        
-        
+
+        this._searchText = value
+
         this.update (() => {
-            this._searchText = value
             if (isNullOrEmpty (value))
                 this.attemptedAutoComplete = false            
             if (this.isRealtime)
@@ -230,12 +230,9 @@ export class AutoComplete extends Component implements AutoCompleteProps
                 this.selections.map (sel =>
                     span ({class: css.selection + " selection d-flex align-items-center "},
                         span ({style: {whiteSpace: "nowrap" }}, sel),
-                        button({
-                            onclick: () => this.removeSelection (sel),
-                            class: 'close d-inline-flex', type: 'button'
-                        },
-                            icon ({ style: { fontSize: "16px", fontWeight: "bold" } }, "close")
-                        )
+                        closeButton ({
+                            onclick: () => this.removeSelection (sel)
+                        })
                     )
                 )            
         )
@@ -303,9 +300,9 @@ export class AutoComplete extends Component implements AutoCompleteProps
                     div ({ class: 'text-center'}, "No results found") :
                 this.suggestions.map ((s, index) =>
                     commandLink ({
-                        onclick: () => this.selectSuggestion (s),                        
-                        tabindex: 0,                            
-                        onkeydown: e => {this.suggestionKeyDown (e)},
+                        onclick: () => this.selectSuggestion (s),
+                        onkeydown: e => this.suggestionKeyDown (e),
+                        tabindex: 0,                                                        
                         class: 'dropdown-item'
                     }, s)
                 )
@@ -342,15 +339,6 @@ export const mapSingleOrMultiple = <T,U> (isMulti: boolean, value: T | T[], mapp
     isMulti ?
         (<T[]>value).map (x => mapping (x)) :
         mapping (<T>value)
-
-export const mapPropertyFromTo = <T> (
-    array: T[],
-    from: (value: T) => string,
-    to: (value: T) => string
-) =>
-    (value: string) =>
-        Let (array.find (c => from(c) == value), c => c ? to(c) : "")
-
 
 export const css = {
     outer: style({           

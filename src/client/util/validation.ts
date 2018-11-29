@@ -1,6 +1,6 @@
 import { ValidationArguments, ValidationError } from 'class-validator'
 import { style } from 'typestyle'
-import { Component, div, form, HValue, IValidated, label, VElement, getFriendlyName, getPropertyKey, InputProps, PropertyRef } from 'pickle-ts'
+import { Component, div, form, HValue, IValidated, label, VElement, CoreInputAttrs, getFriendlyName, getPropertyKey, PropertyRef } from 'pickle-ts'
 
 export const bestLabel = (args: ValidationArguments) =>
     getFriendlyName (args.object, args.property)
@@ -48,28 +48,18 @@ export const customInvalidFeedbackClass = style({
     color: 'red'
 }, feedbackMessageObj)
 
-export type InputFn<T> = (
-    component: Component,
-    prop: PropertyRef<T>,
-    inputProps: InputProps,
-    ...values: HValue[]
-) => VElement
-
-export interface SuperInputProps extends InputProps {
-    label?: HValue
-}
-
-export function superInput<T> (
+export const inputUnit = <T>
+(
     component: IValidated & Component,
-    inputFn: InputFn<T>,    
-    prop: PropertyRef<T>,   
-    props: SuperInputProps,
-    ...values: HValue[]
-)
+    prop: PropertyRef<T>,           
+    createInput: (props: CoreInputAttrs<T>) => VElement
+) =>
 {
+    const id = getPropertyKey (prop)
+
     return div ({ class: 'form-group'},
-         label ({ for: getPropertyKey (prop)}, props.label || getFriendlyName (component, prop)),
-         inputFn (component, prop, props, { id: getPropertyKey (prop)}, ...values),          
+         label ({ for: id}, getFriendlyName (component, prop) ),
+         createInput ({component, prop, attrs: { id: id } }),
          propertyValidation (component, prop)
     )
 }
