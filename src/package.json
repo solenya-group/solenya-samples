@@ -6,7 +6,7 @@
   },
   "dependencies": {
     "reflect-metadata": "0.1.12",
-    "pickle-ts": "1.2.0", 
+    "pickle-ts": "1.2.1",
     "class-transformer": "0.2.0",
     "class-validator": "0.9.1",
     "typestyle": "2.0.1",
