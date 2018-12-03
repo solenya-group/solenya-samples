@@ -1,6 +1,6 @@
 import { Exclude, plainToClass, Type } from 'class-transformer'
 import { uniqBy } from 'lodash-es'
-import { br, Component, div } from 'pickle-ts'
+import { br, Component, div } from 'solenya'
 import { style } from 'typestyle'
 import { Table } from '../util/table'
 

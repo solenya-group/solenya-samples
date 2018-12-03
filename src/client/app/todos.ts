@@ -1,4 +1,4 @@
-﻿import { Component, VElement, div, ul, li, commandLink, span, isNullOrEmpty, checkbox } from  'pickle-ts'
+﻿import { Component, VElement, div, ul, li, commandLink, span, isNullOrEmpty, checkbox } from  'solenya'
 import { myInputText, closeButton } from '../util/util'
 import { style } from 'typestyle'
 import { Type } from 'class-transformer'

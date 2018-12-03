@@ -1,4 +1,4 @@
-﻿import { Component, VElement, h2, div, button } from 'pickle-ts'
+﻿import { Component, VElement, h2, div, button } from 'solenya'
 import $ from 'jquery'
 
 export enum ModalAction

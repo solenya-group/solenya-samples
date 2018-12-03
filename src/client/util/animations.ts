@@ -1,4 +1,4 @@
-﻿import { VLifecycle } from 'pickle-ts'
+﻿import { VLifecycle } from 'solenya'
 
 const bowser:any = require ("bowser")
 

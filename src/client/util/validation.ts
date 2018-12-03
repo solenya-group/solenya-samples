@@ -1,6 +1,6 @@
 import { ValidationArguments, ValidationError } from 'class-validator'
 import { style } from 'typestyle'
-import { Component, InputProps, div, form, IValidated, label, VElement, getFriendlyName, getPropertyKey, PropertyRef } from 'pickle-ts'
+import { Component, InputProps, div, form, IValidated, label, VElement, getFriendlyName, getPropertyKey, PropertyRef } from 'solenya'
 
 export const bestLabel = (args: ValidationArguments) =>
     getFriendlyName (args.object, args.property)

@@ -1,8 +1,7 @@
-# Pickle Samples
+# Solenya Samples
 
-* Live Demos: http://pickle-ts.com/
-* Live Editable Code Samples: https://stackblitz.com/@pickle-ts
-* Github Samples: https://github.com/pickle-ts/pickle-samples
+* Live Editable Code Samples: https://stackblitz.com/edit/solenya-samples 
+* Github Samples: https://github.com/solenya-group/solenya-samples
 
 The individual samples are in the /src/client/app folder:
 

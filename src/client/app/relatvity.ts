@@ -1,4 +1,4 @@
-﻿import { Component, div, p, inputRange, IRouted } from 'pickle-ts'
+﻿import { Component, div, p, inputRange, IRouted } from 'solenya'
 import { style } from 'typestyle'
 import { Exclude } from 'class-transformer'
 

@@ -1,4 +1,4 @@
-import { Component, div, HAttributes, inputRange, VElement, getFriendlyName, getPropertyValue, PropertyRef } from 'pickle-ts'
+import { Component, div, HAttributes, inputRange, VElement, getFriendlyName, getPropertyValue, PropertyRef } from 'solenya'
 
 export class BMI extends Component
 {

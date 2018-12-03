@@ -1,5 +1,5 @@
 ﻿import { Exclude, Type } from 'class-transformer'
-import { Component, div, h1, key, li, main, ul, IRouted, Router, humanizeIdentifier } from 'pickle-ts'
+import { Component, div, h1, key, li, main, ul, IRouted, Router, humanizeIdentifier } from 'solenya'
 import { slide } from '../util/animations'
 import { layout, layoutContent, layoutFooter, layoutHeader } from '../util/styles'
 import { AnimateElement } from './animateElement'

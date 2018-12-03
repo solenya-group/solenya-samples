@@ -1,7 +1,7 @@
 import './css/site.scss'
 import './polyfills'
 import 'bootstrap'
-import { App } from 'pickle-ts'
+import { App } from 'solenya'
 import { Samples } from './app/samples'
 
 window["app"] = new App (Samples, "app")

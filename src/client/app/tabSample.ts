@@ -1,4 +1,4 @@
-﻿import { Component, div } from 'pickle-ts'
+﻿import { Component, div } from 'solenya'
 import { TabGroup } from '../util/tabGroup'
 
 export class TabSample extends TabGroup

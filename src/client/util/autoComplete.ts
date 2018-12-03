@@ -1,4 +1,4 @@
-import { commandLink, Component, div, HAttributes, inputText, isNullOrEmpty, key, span, VElement } from 'pickle-ts'
+import { commandLink, Component, div, HAttributes, inputText, isNullOrEmpty, key, span, VElement } from 'solenya'
 import * as $ from "jquery"
 import { debounce } from 'lodash-decorators'
 import { style } from 'typestyle'

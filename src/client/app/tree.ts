@@ -1,4 +1,4 @@
-﻿import { Component, div, VElement } from 'pickle-ts'
+﻿import { Component, div, VElement } from 'solenya'
 import { Type } from 'class-transformer'
 import { myButton } from '../util/util'
 

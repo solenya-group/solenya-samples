@@ -1,4 +1,4 @@
-﻿import { button, div, HValue, i, Let, inputText, inputValue, label, span, inputNumber, InputProps, mergeNestedAttrs } from 'pickle-ts'
+﻿import { button, div, HValue, i, Let, inputText, inputValue, label, span, inputNumber, InputProps, mergeNestedAttrs } from 'solenya'
 
 export const icon = (...values: HValue[]) =>
     i({class: "material-icons"}, ...values, name)

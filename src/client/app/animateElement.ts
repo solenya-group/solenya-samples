@@ -1,5 +1,5 @@
 import { style } from 'typestyle/lib'
-import { Component, div, radioGroup, VElement } from 'pickle-ts'
+import { Component, div, radioGroup, VElement } from 'solenya'
 import { slide } from '../util/animations'
 import { myButton } from '../util/util'
 

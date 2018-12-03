@@ -1,4 +1,4 @@
-import { Component, inputText, div, p } from 'pickle-ts'
+import { Component, inputText, div, p } from 'solenya'
 import { Modal, ModalAction} from '../util/modal'
 import { myButton } from '../util/util'
 

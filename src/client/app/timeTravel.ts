@@ -1,4 +1,4 @@
-import { Component, div } from 'pickle-ts'
+import { Component, div } from 'solenya'
 import { myButton } from '../util/util'
 import { codeClass } from '../util/styles'
 

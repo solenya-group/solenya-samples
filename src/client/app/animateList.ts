@@ -1,6 +1,6 @@
 import { Exclude } from 'class-transformer'
 import { range, shuffle } from 'lodash'
-import { Component, div } from 'pickle-ts'
+import { Component, div } from 'solenya'
 import { slideChildren } from '../util/animations'
 import { myButton } from '../util/util'
 

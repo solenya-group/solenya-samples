@@ -1,4 +1,4 @@
-import { Component, div } from 'pickle-ts'
+import { Component, div } from 'solenya'
 import { Counter } from './counter'
 
 export class Composition extends Component

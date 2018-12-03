@@ -1,6 +1,6 @@
 import { Exclude } from 'class-transformer'
 import { debounce } from 'lodash-decorators'
-import { a, Component, isNullOrEmpty, li, ul, VElement } from 'pickle-ts'
+import { a, Component, isNullOrEmpty, li, ul, VElement } from 'solenya'
 import { box, myInputText } from '../util/util'
 
 export class GitSearch extends Component

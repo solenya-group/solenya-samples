@@ -1,4 +1,4 @@
-﻿import { a, commandLink, div, span, VElement } from "pickle-ts"
+﻿import { a, commandLink, div, span, VElement } from "solenya"
 
 export type MenuItem = {
     label: string | VElement,

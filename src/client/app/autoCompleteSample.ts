@@ -1,4 +1,4 @@
-import { Component, p } from 'pickle-ts'
+import { Component, p } from 'solenya'
 import { AutoComplete } from '../util/autoComplete'
 import { Exclude } from 'class-transformer'
 import { mapPropertyFromTo } from '../util/util'

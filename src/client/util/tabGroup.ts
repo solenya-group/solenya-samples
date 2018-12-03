@@ -1,5 +1,5 @@
 import { Exclude } from 'class-transformer'
-import { Component, div, IRouted, li, Router, ul } from 'pickle-ts'
+import { Component, div, IRouted, li, Router, ul } from 'solenya'
 import { slide } from '../util/animations'
 
 export abstract class TabGroup extends Component implements IRouted

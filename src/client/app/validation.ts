@@ -1,5 +1,5 @@
 import { Exclude } from 'class-transformer'
-import { Component, div, Label, Validator, VElement, radioGroup, selector } from 'pickle-ts'
+import { Component, div, Label, Validator, VElement, radioGroup, selector } from 'solenya'
 import { box, inputCurrency, myButton, myInputNumber, myInputText } from '../util/util'
 import { inputUnit } from '../util/validation'
 import { vIsNotEmpty, vIsNumber, vLengthRange, vMax, vMin } from '../util/validationDecorators'

@@ -1,7 +1,7 @@
 import { Exclude } from 'class-transformer'
 import { debounce } from 'lodash-decorators'
 import { orderBy } from 'lodash-es'
-import { commandLink, Component, div, equalsIgnoreCase, getFriendlyName, HValue, inputText, isNullOrEmpty, key, table, tbody, td, th, thead, tr, VElement } from "pickle-ts"
+import { commandLink, Component, div, equalsIgnoreCase, getFriendlyName, HValue, inputText, isNullOrEmpty, key, table, tbody, td, th, thead, tr, VElement } from "solenya"
 import { MenuItem, menuView } from './bsmenu'
 import { objUrl, queryToObject } from './network'
 

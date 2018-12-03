@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsNumber, Max, Min, Validate, ValidationArguments, ValidatorConstraint, ValidatorConstraintInterface } from "class-validator"
-import { getFriendlyName } from "pickle-ts"
+import { getFriendlyName } from "solenya"
 
 const bestLabel = (args: ValidationArguments) =>
     getFriendlyName (args.object, args.property)
