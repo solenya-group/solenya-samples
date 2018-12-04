@@ -1,12 +1,12 @@
-import { commandLink, Component, div, HAttributes, inputText, isNullOrEmpty, key, span, VElement } from 'solenya'
 import * as $ from "jquery"
 import { debounce } from 'lodash-decorators'
+import { commandLink, Component, div, HAttributes, inputText, isNullOrEmpty, span, VElement, getPropertyKey, DatabindProps, PropertyRef, prefixId, transient } from 'solenya'
 import { style } from 'typestyle'
-import { Exclude } from "class-transformer"
-import { closeButton } from './util'
+import { closeButton } from '../util/util'
 
-interface IAutoCompleteProps
+interface IAutoCompleteProps<T>
 {
+    prefix: string
     isMultiSelect : boolean
     suggestionLimit: number
     isRealtime: boolean
@@ -18,12 +18,12 @@ interface IAutoCompleteProps
     preload: boolean
     looseMatch: boolean
     suggestor?: (searchText: string) => Promise<string[]>
-    labelToModel?: (label: string) => string
-    modelToLabel?: (model: string) => string
+    labelToModel?: (label: string) => T
+    modelToLabel?: (model: T) => string
     onSelectEvent?: (selection: string | string[]) => void    
 }
 
-export type AutoCompleteProps = Partial<IAutoCompleteProps>
+export type AutoCompleteProps<T> = Partial<IAutoCompleteProps<T>> & DatabindProps<T|T[]>
 
 const KeyCode = {
     Enter: 13,
@@ -33,8 +33,7 @@ const KeyCode = {
     Down: 40
 }
 
-@Exclude()
-export class AutoComplete extends Component implements AutoCompleteProps
+export class AutoComplete<T> extends Component implements AutoCompleteProps<T>
 {    
     readonly isMultiSelect = false
     readonly suggestionLimit = 10
@@ -44,38 +43,47 @@ export class AutoComplete extends Component implements AutoCompleteProps
     readonly autoSelectSingleResult = false    
     readonly allowNonSuggestions = false    
     readonly preload = false
-    looseMatch = false
+    looseMatch = false // // todo - encapsulate further
     readonly suggestor?: (searchText: string) => Promise<string[]>        
     private readonly toModel?: (selection: string | string[]) => void
     private readonly fromModel?: () => string | string[]   
+    readonly prefix = ""
 
-    onSelectEvent?: (selection: string | string[]) => void    
+    onSelectEvent?: (selection: string | string[]) => void    // // todo - encapsulate further 
 
-    selections: string[] = []    
-    _searchText?: string 
-    suggestions: string[] = []
+    public selections: string[] = [] // todo - encapsulate further   
+    protected _searchText?: string 
+    protected suggestions: string[] = []
 
-    isSuggestion = false
+    isSuggestion = false // // todo - encapsulate further
     private attemptedAutoComplete = false
     private enterKeySelection = false
-    private transitioningFocus = false
-    private static idCount = 0
-    private id!: string
+    private transitioningFocus = false    
 
-    constructor (parent: Component, prop: () => any, props: AutoCompleteProps = {}) {        
+    @transient readonly target!: Component
+    readonly prop!: PropertyRef<T|T[]>
+
+    constructor (props: AutoCompleteProps<T>) {        
         super()        
             
+        const target = props.target
+        const propKey = getPropertyKey (props.prop)
+
         Object.keys (props)
             .filter(k => props[k] !== undefined)
             .forEach(k => this[k] = props[k])
         
-        this.toModel = async selection => parent[key(prop)] =
+        this.toModel = async selection => target[propKey] =
             mapSingleOrMultiple (this.isMultiSelect, selection, x => props.labelToModel ? props.labelToModel (x) : x)
         
         this.fromModel = () =>
-            mapSingleOrMultiple (this.isMultiSelect, parent[key(prop)], x => props.modelToLabel ? props.modelToLabel (x) : x)        
-    }                      
+            mapSingleOrMultiple (this.isMultiSelect, target[propKey], x => props.modelToLabel ? props.modelToLabel (x) : x)        
+    }
 
+    get id() {        
+        return prefixId (this.prefix, getPropertyKey (this.prop))        
+    }
+                      
     private handleClickOutside() {
         $(document).click (e => {
             let ac = document.getElementById (this.id)
@@ -89,7 +97,6 @@ export class AutoComplete extends Component implements AutoCompleteProps
 
     async attached (deserialized: boolean)
     {
-        this.id = "autoComplete" + (++AutoComplete.idCount)
         this.handleClickOutside()
 
         if (this.suggestor && this.preload)
@@ -165,7 +172,7 @@ export class AutoComplete extends Component implements AutoCompleteProps
     }
 
     set searchText (value: string|undefined) {    
-        if (this._searchText == value)
+        if ((this._searchText || "") == (value || ""))
             return        
 
         this._searchText = value
@@ -175,9 +182,20 @@ export class AutoComplete extends Component implements AutoCompleteProps
                 this.attemptedAutoComplete = false            
             if (this.isRealtime)
                 this.autocompleteAsync ()
-            else
+            else {
+                this.updateIsSuggestion()
                 this.onSelect()
+            }
         })
+    }
+
+    private updateIsSuggestion() {        
+        const match = this.suggestions.filter (s => s.toLowerCase() == (this.searchText || "").toLowerCase())
+        this.isSuggestion = match.length > 0                        
+        if (this.isSuggestion)
+            this.update (() => {
+                this._searchText = match[0]   
+            })
     }
     
     @debounce (300)    
@@ -209,17 +227,13 @@ export class AutoComplete extends Component implements AutoCompleteProps
             
             if (this.autoSelectSingleResult && suggestions.length == 1) {
                 this.selectSuggestion (suggestions[0])
-                $("#"+this.id).val (this.searchText || "") // hack
+                $("#"+this.id).val (this.searchText || "")
                 return
             }
 
             this.suggestions = suggestions.slice (0, this.suggestionLimit)              
             this.attemptedAutoComplete = true
-
-            const match = this.suggestions.filter (s => s.toLowerCase() == (this.searchText || "").toLowerCase())
-            this.isSuggestion = match.length > 0                        
-            if (this.isSuggestion)
-                this._searchText = match[0]                                
+            this.updateIsSuggestion()
             this.onSelect()
         })
     }
@@ -230,9 +244,7 @@ export class AutoComplete extends Component implements AutoCompleteProps
                 this.selections.map (sel =>
                     span ({class: css.selection + " selection d-flex align-items-center "},
                         span ({style: {whiteSpace: "nowrap" }}, sel),
-                        closeButton ({
-                            onclick: () => this.removeSelection (sel)
-                        })
+                        closeButton ({ onclick: () => this.removeSelection (sel) })
                     )
                 )            
         )
@@ -328,7 +340,7 @@ export class AutoComplete extends Component implements AutoCompleteProps
             if (this.isMultiSelect)
                 this.selections = <string[]> selection
             else {
-                this.searchText = <string> selection
+                this._searchText = <string> selection
                 this.isSuggestion = true
             }
         })

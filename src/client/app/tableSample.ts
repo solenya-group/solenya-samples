@@ -1,12 +1,12 @@
-import { Exclude, plainToClass, Type } from 'class-transformer'
+import { plainToClass, Type } from 'class-transformer'
 import { uniqBy } from 'lodash-es'
-import { br, Component, div } from 'solenya'
+import { transient, br, Component, div } from 'solenya'
 import { style } from 'typestyle'
 import { Table } from '../util/table'
 
 export class TableSample extends Component
 {
-    @Exclude() table = new PresidentTable (10)
+    @transient table = new PresidentTable (10)
 
     view() {
         var o = new President()

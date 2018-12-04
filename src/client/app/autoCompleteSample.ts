@@ -1,14 +1,15 @@
-import { Component, p } from 'solenya'
+import { Component, transient } from 'solenya'
 import { AutoComplete } from '../util/autoComplete'
-import { Exclude } from 'class-transformer'
 import { mapPropertyFromTo } from '../util/util'
 
 export class AutoCompleteSample extends Component
 {
     usStates: string[] = []
 
-    @Exclude() usStatesAutoComplete: AutoComplete =
-        new AutoComplete (this, () => this.usStates, {
+    @transient usStatesAutoComplete =
+        new AutoComplete ({
+            target: this,
+            prop: () => this.usStates, 
             isMultiSelect: true,
             modelToLabel: mapPropertyFromTo (usStates, c => c.code, c => c.label),
             labelToModel: mapPropertyFromTo (usStates, c => c.label, c => c.code),

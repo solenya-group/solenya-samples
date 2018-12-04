@@ -1,5 +1,4 @@
-﻿import { Exclude, Type } from 'class-transformer'
-import { Component, div, h1, key, li, main, ul, IRouted, Router, humanizeIdentifier } from 'solenya'
+﻿import { transient, Component, div, h1, key, li, main, ul, IRouted, Router, humanizeIdentifier } from 'solenya'
 import { slide } from '../util/animations'
 import { layout, layoutContent, layoutFooter, layoutHeader } from '../util/styles'
 import { AnimateElement } from './animateElement'
@@ -21,8 +20,8 @@ import { ValidationSample } from './validation'
 
 export class Samples extends Component implements IRouted
 {
-    @Exclude() router:Router = new Router (this)
-    @Exclude() routeName = ""
+    @transient router:Router = new Router (this)
+    @transient routeName = ""
 
     counter = new Counter ()
     bmi = new BMI ()    

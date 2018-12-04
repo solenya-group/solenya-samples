@@ -1,6 +1,5 @@
-import { Exclude } from 'class-transformer'
 import { debounce } from 'lodash-decorators'
-import { a, Component, isNullOrEmpty, li, ul, VElement } from 'solenya'
+import { a, Component, isNullOrEmpty, li, ul, VElement, transient } from 'solenya'
 import { box, myInputText } from '../util/util'
 
 export class GitSearch extends Component
@@ -34,7 +33,7 @@ export class GitSearch extends Component
         )
     }
 
-    @Exclude()
+    @transient
     @debounce (500)    
     async search (search: string) {
         var result = await fetch ("https://api.github.com/search/repositories?q=" + encodeURI (search))

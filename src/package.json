@@ -5,7 +5,7 @@
     "start": "webpack-dev-server --mode development --hot"
   },
   "dependencies": {
-    "solenya": "1.2.1",
+    "solenya": "1.2.5",
     "reflect-metadata": "0.1.12",
     "class-transformer": "0.2.0",
     "class-validator": "0.9.1",

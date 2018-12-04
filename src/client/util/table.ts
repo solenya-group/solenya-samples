@@ -1,7 +1,6 @@
-import { Exclude } from 'class-transformer'
 import { debounce } from 'lodash-decorators'
 import { orderBy } from 'lodash-es'
-import { commandLink, Component, div, equalsIgnoreCase, getFriendlyName, HValue, inputText, isNullOrEmpty, key, table, tbody, td, th, thead, tr, VElement } from "solenya"
+import { commandLink, Component, transient, div, equalsIgnoreCase, getFriendlyName, HValue, inputText, isNullOrEmpty, key, table, tbody, td, th, thead, tr, VElement } from "solenya"
 import { MenuItem, menuView } from './bsmenu'
 import { objUrl, queryToObject } from './network'
 
@@ -48,7 +47,7 @@ export abstract class Table<T> extends Component implements ITableQuery
     pageSize = 10        
     sort = ""
     total = NaN
-    @Exclude() _search = ""
+    @transient _search = ""
 
     constructor (pageSize?: number) {
         super()
@@ -58,6 +57,7 @@ export abstract class Table<T> extends Component implements ITableQuery
 
     abstract reload() : Promise<void>   
 
+    @transient
     get search() {return this._search}
 
     set search (value: string) {
@@ -67,7 +67,7 @@ export abstract class Table<T> extends Component implements ITableQuery
         }
     }
 
-    @Exclude()
+    @transient
     get hasMoreResults() {
         return this.from + this.pageSize <= this.total
     }

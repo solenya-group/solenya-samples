@@ -1,9 +1,9 @@
-﻿import { Component, div, p, inputRange, IRouted } from 'solenya'
+﻿import { transient, Component, div, p, inputRange, IRouted } from 'solenya'
 import { style } from 'typestyle'
 import { Exclude } from 'class-transformer'
 
 export class Relativity extends Component {
-    @Exclude() on = false
+    @transient on = false
     boxes = [-1, 0, 1]
     t = 0
     speedPercent = 50

@@ -1,12 +1,11 @@
-import { Exclude } from 'class-transformer'
-import { Component, div, IRouted, li, Router, ul } from 'solenya'
+import { transient, Component, div, IRouted, li, Router, ul } from 'solenya'
 import { slide } from '../util/animations'
 
 export abstract class TabGroup extends Component implements IRouted
 {
-    @Exclude() router: Router = new Router (this)
-    @Exclude() routeName!: string    
-    @Exclude() slideForward = false
+    @transient router: Router = new Router (this)
+    @transient routeName!: string    
+    @transient slideForward = false
 
     attached() {
         for (var k of this.childrenKeys()) {
