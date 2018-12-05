@@ -5,7 +5,8 @@
     "start": "webpack-dev-server --mode development --hot"
   },
   "dependencies": {
-    "solenya": "1.2.5",
+    "solenya": "^1.2.6",
+    "solenya-autocomplete": "^1.2.8",
     "reflect-metadata": "0.1.12",
     "class-transformer": "0.2.0",
     "class-validator": "0.9.1",
@@ -22,6 +23,7 @@
     "es6-shim": "0.35.3"
   },
   "devDependencies": {
+    "typescript": "^3.2.1",
     "@types/node": "8.5.2",
     "@types/webpack-env": "1.13.0",
     "@types/lodash-es": "4.17.0",
@@ -34,7 +36,6 @@
     "css-loader": "0.28.11",
     "ts-loader": "4.2.0",
     "source-map-loader": "0.2.3",
-    "typescript": "3.0.1",
     "webpack": "4.16.5",
     "webpack-cleanup-plugin": "0.5.1",
     "webpack-cli": "3.1.0",

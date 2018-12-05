@@ -1,5 +1,5 @@
 import { Component, transient } from 'solenya'
-import { AutoComplete } from '../util/autoComplete'
+import { AutoComplete } from 'solenya-autocomplete'
 import { mapPropertyFromTo } from '../util/util'
 
 export class AutoCompleteSample extends Component

@@ -5,3 +5,4 @@ client/*/*.map
 client/*.js
 client/*.map
 package-lock.json
+dist
