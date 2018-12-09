@@ -1,38 +1,32 @@
-import { style } from 'typestyle/lib'
 import { Component, div, radioGroup, VElement } from 'solenya'
-import { slide } from '../util/animations'
+import { transitionChild, Orientation, Direction } from 'solenya-animation'
+import { style } from 'typestyle/lib'
 import { myButton } from '../util/util'
 
-enum Direction { Horizontal = "Horizontal", Vertical = "Vertical" }
-
-export class AnimateElement extends Component
-{
-    count = 0
-    forwards = true
-    option = Direction.Horizontal
-
-    view () : VElement {           
-        return div (
-            radioGroup ({
+export class AnimateElement extends Component {
+    count = 0  
+    orientation: Orientation = "horizontal"
+    direction: Direction = "forwards"
+  
+    view() {
+        return div(
+            radioGroup({
                 target: this,
-                prop: () => this.option,
-                options: [Direction.Vertical, Direction.Horizontal]
-                    .map (d => ({label: ""+d, value: d}))
+                prop: () => this.orientation,
+                options: ["vertical", "horizontal"].map(d => ({ label: d, value: d})),
             }),
             myButton ({ onclick: () => this.add(-1) }, "prev"),
             myButton ({ onclick: () => this.add(+1) }, "next"),
-            div (slide (this.option == "Horizontal", this.forwards),
-                div (
-                    { key: this.count, class: sprite (this.count % 2 == 0) },
-                )
+            div(transitionChild({orientation: this.orientation, direction: this.direction}),
+                div({ key: this.count, class: sprite(this.count % 2 == 0) })
             )
         )
     }
-
+  
     add(x: number) {
         this.update(() => {
-            this.count += x
-            this.forwards = x > 0
+           this.count += x
+          this.direction = x > 0 ? "forwards" : "backwards"
         })
     }
 }

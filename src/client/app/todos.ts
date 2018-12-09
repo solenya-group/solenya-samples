@@ -1,4 +1,5 @@
 ﻿import { Component, VElement, div, ul, li, commandLink, span, isNullOrEmpty, checkbox } from  'solenya'
+import { transitionChildren } from 'solenya-animation'
 import { myInputText, closeButton } from '../util/util'
 import { style } from 'typestyle'
 import { Type } from 'class-transformer'
@@ -114,13 +115,13 @@ export class Todos extends Component {
   }
 
   listView() {
-    return ul({ class: 'my-2' },
+    return ul(transitionChildren(), { class: 'my-2' },
       this.filteredList().map(task => task.view(() => this.removeTask(task)))
     )
   }
 
   view() {
-    return div(
+    return div(transitionChildren(),
       this.linksView(),
       this.inputView(),
       this.listView(),

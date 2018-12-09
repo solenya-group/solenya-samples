@@ -1,6 +1,6 @@
 import { range, shuffle } from 'lodash'
 import { transient, Component, div } from 'solenya'
-import { slideChildren } from '../util/animations'
+import { transitionChildren } from 'solenya-animation'
 import { myButton } from '../util/util'
 
 export class AnimateList extends Component {
@@ -9,7 +9,7 @@ export class AnimateList extends Component {
     view() {
         return div(
             myButton ({onclick: () => this.sort() }, "shuffle"),
-            div (slideChildren(), this.items.map(n => div ({ key: n, style: { display: "inline-block", width: "40px" } }, n)))
+            div (transitionChildren(), this.items.map(n => div ({ key: n, style: { display: "inline-block", width: "40px" } }, n)))
         )
     }
 

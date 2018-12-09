@@ -1,5 +1,5 @@
 ﻿import { transient, Component, div, h1, key, li, main, ul, IRouted, Router, humanizeIdentifier } from 'solenya'
-import { slide } from '../util/animations'
+import { transitionChild } from 'solenya-animation'
 import { layout, layoutContent, layoutFooter, layoutHeader } from '../util/styles'
 import { AnimateElement } from './animateElement'
 import { AnimateList } from './animateList'
@@ -74,7 +74,7 @@ export class Samples extends Component implements IRouted
                             )
                         )
                     ),                    
-                    div (slide (),
+                    div (transitionChild ({orientation: "horizontal", direction: "forwards"}),
                         div ({ key: this.router.currentChildName },
                             div ({ class: 'col'},
                                 h1 ({ class: 'py-3' }, humanizeIdentifier (this.router.currentChildName)),
