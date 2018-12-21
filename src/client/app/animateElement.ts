@@ -1,5 +1,5 @@
 import { Component, div, radioGroup, VElement } from 'solenya'
-import { transitionChild, Orientation, Direction } from 'solenya-animation'
+import { transitionChildren, Orientation, Direction } from 'solenya-animation'
 import { style } from 'typestyle/lib'
 import { myButton } from '../util/util'
 
@@ -17,7 +17,7 @@ export class AnimateElement extends Component {
             }),
             myButton ({ onclick: () => this.add(-1) }, "prev"),
             myButton ({ onclick: () => this.add(+1) }, "next"),
-            div(transitionChild({orientation: this.orientation, direction: this.direction}),
+            div(transitionChildren({orientation: this.orientation, direction: this.direction}),
                 div({ key: this.count, class: sprite(this.count % 2 == 0) })
             )
         )

@@ -1,5 +1,5 @@
 import { transient, Component, div, IRouted, li, Router, ul } from 'solenya'
-import { transitionChild } from 'solenya-animation'
+import { transitionChildren } from 'solenya-animation'
 
 export abstract class TabGroup extends Component implements IRouted
 {
@@ -38,7 +38,7 @@ export abstract class TabGroup extends Component implements IRouted
                 div ({ class: 'tab-content' },
                     this.childrenKeys().map (k =>
                         div ({ class: 'tab-pane' + (current.routeName == k ? ' show active' : '') },
-                            div (transitionChild ({ orientation: "horizontal", direction: this.slideForward ? "forwards" : "backwards"}),
+                            div (transitionChildren ({ orientation: "horizontal", direction: this.slideForward ? "forwards" : "backwards"}),
                                 div ( {key: current.routeName}, current.view())
                             )
                         )
