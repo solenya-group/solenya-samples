@@ -7,7 +7,7 @@
   "dependencies": {
     "solenya": "^1.2.6",
     "solenya-autocomplete": "^1.2.8",
-    "solenya-animation": "^1.3.0",
+    "solenya-animation": "^1.4.0",
     "reflect-metadata": "0.1.12",
     "class-transformer": "0.2.0",
     "class-validator": "0.9.1",
