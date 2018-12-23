@@ -74,7 +74,7 @@ export class Samples extends Component implements IRouted
                             )
                         )
                     ),                    
-                    div (transitionChildren ({orientation: "horizontal", direction: "forwards"}),
+                    div (transitionChildren ({kind: "fade"}),
                         div ({ key: this.router.currentChildName },
                             div ({ class: 'col'},
                                 h1 ({ class: 'py-3' }, humanizeIdentifier (this.router.currentChildName)),
