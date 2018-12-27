@@ -40,7 +40,7 @@ export class Relativity extends Component {
                 div(this.equationStr()),
                 div({ style: { width: '100%' } },
                     div({ style: { position: 'relative', display: 'inline-block' } },
-                        this.boxes.map(x =>
+                        ...this.boxes.map(x =>
                             this.boxes.map(y =>
                                 div({ class: sprite(this.character(x)), id: `sprite${x}${y}` }))
                         )
