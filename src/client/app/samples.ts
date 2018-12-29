@@ -1,4 +1,4 @@
-﻿import { transient, Component, div, h1, key, li, main, ul, IRouted, Router, humanizeIdentifier } from 'solenya'
+﻿import { transient, Component, div, h1, key, li, main, ul, IRouted, Router, humanizeIdentifier, img } from 'solenya'
 import { transitionChildren } from 'solenya-animation'
 import { layout, layoutContent, layoutFooter, layoutHeader } from '../util/styles'
 import { AnimateElement } from './animateElement'
@@ -56,14 +56,14 @@ export class Samples extends Component implements IRouted
     }
 
     view () {        
-        document.title = `Pickle - ${humanizeIdentifier (this.router.currentChildName)} sample`
+        document.title = `Solenya - ${humanizeIdentifier (this.router.currentChildName)} sample`
 
         return (
             div ({ class: layout },
                 div ({ class: layoutHeader }),
                 main ({ class: layoutContent + ' d-flex'},
                     div ({ class: 'p-3', style: { width: '250px', zIndex: 1000, backgroundColor: 'white' } },
-                        div ({ class: 'mb-3', style: { backgroundImage: `url('/client/images/pickle.png')`, backgroundSize: 'cover', width: '100px', height: '100px' } } ),
+                        img ({ src: '/client/images/logo.svg', class: "mb-3", style: { width: '4rem' } } ),
                         ul (
                             this.childrenKeys().map (key =>
                                 li ({ class: 'nav-item ' + (key == this.router.currentChildName ? "font-weight-bold": "") },
